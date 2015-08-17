@@ -1,0 +1,43 @@
+1) API KEY
+
+- don't necessarily need one
+- but good idea to use one, to track your apps stats
+
+2) <script ... async ...>
+
+- don't block DOM construction as script is loaded
+- must supply a call back that is invoked when script is loaded 
+
+3) <script ... defer ...>
+
+- don't execute script unitl after page has loaded
+
+4) <div>
+
+- takes width and height of containing elements
+- so empty div has width:0 and height:0
+
+5) <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+- on mobile devices, can zoom in/on maps
+
+6) zoom and center
+
+- map options required on creation
+
+7) Custom Controls
+
+- a control is simply a <div> element which has an absolute position on the map, 
+- it displays some UI to the user, ... 
+- and handles interaction with either the user or the map, usually through an event handler
+
+8) Browser's Supported DOM events
+
+- https://en.wikipedia.org/wiki/DOM_events
+
+9) Control Positioning
+
+- https://google-developers.appspot.com/maps/documentation/javascript/examples/full/control-positioning-labels
+
+10) 
+
