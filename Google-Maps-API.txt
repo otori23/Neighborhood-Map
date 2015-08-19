@@ -103,10 +103,11 @@ A "closure" is an expression (typically a function) that can have free variables
 
 - interface that defines the display and usage of map tiles...
 - and the translation of coordinate systems from screen coordinates to world coordinates (on the map).
+- each Map object maintains a MapTypeRegistry which contains the collection of available MapTypes for that map
 
 15) Basic Map Types
 
-The following map types are available in the Google Maps API:
+the following map types are available in the Google Maps API:
 
 - MapTypeId.ROADMAP:	displays the default road map view. This is the default map type.
 - MapTypeId.SATELLITE:	displays Google Earth satellite images
@@ -115,6 +116,92 @@ The following map types are available in the Google Maps API:
 
 15a) Customs Map Types
 
-- Can create your own custom map types
+- can create your own custom map types
+- means creating a class that implements the MapType interface.
 
- 
+15b) Stand alone  map type
+
+- totally new MapType to replace one of the basic mapTypes (cumbersome)
+
+15c) Overlay Map Type
+
+- designed to work with one of the basic map types (overlay map
+- os overlaid on top of a basic map type
+
+15d) Image Map Type
+
+- think of as abstract base class for creating your stand alone map type
+- gives you some code, so you are not starting from scratch
+- customize to fit you needs
+
+
+16) Projections
+
+- a mapping of latitude/longitude values (world coords) into coordinates on the projection's map (pixels)
+- Google Maps uses the Mercator projection
+- implement Projection interface to define your own
+
+17) Signed-In maps
+
+- specify you want a signed in map using a option parameter when you load the map api
+- allow users to save places; they can view later in any other google map application
+
+
+18) Styled Maps
+
+- can apply styles to the basic map types to customise them
+- allow you to customize the presentation of the standard Google base maps
+- can change the visual display of such elements as roads, parks, and built-up areas
+
+19) Two ways to apply style to a map
+
+- both apporaches use array of MapTypeStyle objects to apply a style to the map
+
+19a) Set style property in mapOptions on map creation
+
+- this changes the style of the standard map type
+
+19b) Create a StyledMapType and apply to map
+
+- this creates a new map type, which can be selected from the map type control
+
+20) MapTypeStyle object
+
+- composed of selectors and stylers
+
+20a) Selectors
+
+- specify what map components should be selected for styling
+- map features are the geographic elements that can be targeted on the map
+- these include roads, parks, bodies of water, and more, as well as their labels.
+
+20b) Stylers
+
+- specify the visual modification of those elements
+- they define the display color through a combination of hue, color, and lightness/gamma values
+
+21) Map Features
+
+- map features represent in maps api as a tree structure
+- the feature "all" is at the root of the tree
+- select feature using a combimation of feature selectors and element selectors for that feature
+
+21a) Selects all features on a map
+
+{
+  featureType: "all"
+}
+
+21b) Selects all the roads on a map
+
+{
+  featureType: "road"
+} 
+
+21c) Selects labels for all local roads
+
+{
+  featureType: "road.local",
+  elementType: "labels"
+}
+
