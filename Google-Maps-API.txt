@@ -180,7 +180,7 @@ the following map types are available in the Google Maps API:
 - specify the visual modification of those elements
 - they define the display color through a combination of hue, color, and lightness/gamma values
 
-21) Map Features
+21) Map Features (MapTypeStyleFeatureType, MapTypeStyleElementType)
 
 - map features represent in maps api as a tree structure
 - the feature "all" is at the root of the tree
@@ -204,4 +204,60 @@ the following map types are available in the Google Maps API:
   featureType: "road.local",
   elementType: "labels"
 }
+
+22) Stylers (MapTypeStyler)
+
+- sepcify visual properties of map features
+
+22a) MapTypeStyler Options
+
+- hue (an RGB hex string) indicates the basic color.
+
+- lightness (a floating point value between -100 and 100) indicates the percentage change in brightness of the element
+
+- saturation (a floating point value between -100 and 100) indicates the percentage change in intensity of the basic color to apply to the element
+
+- gamma (a floating point value between 0.01 and 10.0, where 1.0 applies no correction) indicates the amount of gamma correction to apply to the element
+
+- invert_lightness (if true) simply inverts the existing lightness
+
+- visibility (on, off, or simplified) indicates whether and how the element appears on the map
+
+- color (an RGB hex string) sets the color of the feature
+
+- weight (an integer value, greater than or equal to zero) sets the weight of the feature, in pixels
+
+23) Representing a Features Color - 2 methods
+
+- color (RGB) 
+- hue, saturation, lightness (HSL)
+- or a conbinations of both
+
+23a) use color option in MapTypeStyler (RGB)
+
+- select color with a hex code 
+
+23b) use combination of hue, saturation, and lightness (HSL)
+
+24) The Hue, Saturation, Lightness, Model
+
+- Hue: indicates the basic color
+
+- Saturation: indicates the intensity of that color 
+(0-100: black - color specified by hue)
+
+- Lightness indicates the relative amount of white or black in the constituent color
+(0-100: black - color spcified by hue - white)
+
+24a) vs. RGB model
+
+- diffrent from RGB model
+- to specify Black in HSL, Hue: <<anything>, Saturation: <<anything>>, Lightness: 0
+- to specify White in HSL, Hue: <<anything>, Saturation: <<anything>>, Lightness: 100
+
+25) The Style Map Wizard
+
+- http://googlemaps.github.io/js-samples/styledmaps/wizard/index.html
+
+Creating styles by hand and testing your code to see how they look is potentially time-consuming. Instead, you can use the Styled Map Wizard to set up the JSON for your map's styles. The wizard allows you to select features and their elements, apply operations to those features, and save the styles to JSON, which you can copy and paste into your application.
 
