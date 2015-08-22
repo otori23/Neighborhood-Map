@@ -1,0 +1,75 @@
+﻿
+1) Layers
+
+- layers are objects on the map that consist of one or more separate items, but are manipulated as a single unit
+- like a collection of map objects
+- the Maps API manages the presentation of objects within layers
+
+2) Layer Types
+
+- Data layer
+- Fusion Table layer
+- Heatamp layer
+- KML layer
+- Map engine layer
+- Traffic layer
+- Transit layer
+- Bicycling layer
+
+3) Libraries
+
+- The Heatmap and Maps Engine require loading additional libraries (e.g. the visualization libarary)
+- set the 'libraries' parameter in the script tab that loads the maps api
+
+<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false">
+</script>
+
+4) Data Layer (google.maps.Data)
+
+- access as property of map; e.g. map.data
+- the Google Maps Data layer provides a container for arbitrary geospatial data
+- you can use the Data layer to store your custom data, or to display GeoJSON data on a Google map.
+
+4a) Individual Overlays vs. Data Layer
+
+- instead of adding indiviual overlays to your map
+- if that data contains geometries, such as points, lines or polygons, the API will render these by default as markers, polylines and polygons 
+- you can style these features as you would a normal overlay, or apply styling rules based on other properties  contained in your data set
+
+4b) The google.maps.Data class allows you to:
+
+- add GeoJSON data to your map
+- use google.maps.Data to model arbitrary data
+- choose how your data is represented, and change your mind on the fly
+
+5) Load GeoJSON
+
+- map.data.loadGeoJson('google.json');
+- uses XHR
+
+6) Style GeoJSON Data
+
+- use the google.maps.Data.setStyle() method to specify how your data should look
+- the setStyle() method takes either a StyleOptions object literal, or a function that computes the style for each feature.
+
+6a) Simple style rules
+
+// Set the stroke width, and fill color for each polygon
+  map.data.setStyle({
+    fillColor: 'green',
+    strokeWeight: 1
+  });
+
+6b) Declarative style rules
+
+// Color Capital letters blue, and lower case letters red.
+// Capital letters are represented in ascii by values less than 91
+map.data.setStyle(function(feature) {
+    var ascii = feature.getProperty('ascii');
+    var color = ascii > 91 ? 'red' : 'blue';
+    return {
+      fillColor: color,
+      strokeWeight: 1
+    };
+});
