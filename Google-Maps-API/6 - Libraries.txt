@@ -1,0 +1,30 @@
+Libraries
+
+The JavaScript code for the Maps API is loaded via a bootstrap URL of the form https://maps.googleapis.com/maps/api/js. This bootstrap request loads all of the main Javascript objects and symbols for use in the Maps API. Some Maps API features are also available in self-contained libraries which are not loaded unless you specifically request them. Breaking up supplemental components into libraries allows the main API to load (and parse) quickly; you only incur the additional overhead of loading and parsing libraries if you need them.
+
+You specify additional libraries to load within the bootstrap request by specifying a libraries parameter, passing that parameter the name of the library or libraries. Multiple libraries may be specified as a comma-separated list. Once loaded, libraries are accessed via the google.maps.libraryName namespace.
+
+The following libraries are currently available:
+
+- drawing provides a graphical interface for users to draw polygons, rectangles, polylines, circles, and markers on the map. Consult the Drawing library documentation for more information.
+
+- geometry includes utility functions for calculating scalar geometric values (such as distance and area) on the the surface of the earth. Consult the Geometry library documentation for more information.
+
+- places enables your application to search for Places such as establishments, geographic locations, or prominent points of interest, within a defined area. Please read the Places library documentation for more information.
+
+- visualization provides visual representations of data, including heatmaps and Google Maps Engine data. Please read the Visualization library documentation for more information.
+The following libraries remain available, but have been deprecated:
+
+adsense allows your Maps API application to include context-sensitive text ads. Consult the AdSense library documentation for more information.
+We will add more libraries in the future as we release additional opt-in features.
+
+The following bootstrap request illustrates how to request the google.maps.geometry library of the Maps Javascript API:
+
+<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?libraries=geometry">
+</script>
+To request multiple libraries, separate them with a comma:
+
+<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?libraries=geometry,places">
+</script>

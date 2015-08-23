@@ -1,0 +1,14 @@
+
+1) Services
+
+- the google maps api provides several services that work with maps
+- i.e. the response data to a request to the service can be consumed by the map and sensibly rendered
+
+2) Supported Services
+
+- Directions
+- Distance Matrix
+- Elevation
+- Geocoding
+- Maximum Zoon Imagery
+- Street View 
