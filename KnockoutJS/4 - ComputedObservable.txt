@@ -1,0 +1,20 @@
+
+1) Computed Observables
+
+- an observable whose value depends on the value of other observables
+- these are functions that are dependent on one or more other observables
+- they will automatically update whenever any of these dependencies change
+
+// JS
+function AppViewModel() {
+    this.firstName = ko.observable('Bob');
+    this.lastName = ko.observable('Smith');
+
+    this.fullName = ko.computed(function() {
+        return this.firstName() + " " + this.lastName();
+    }, this);
+}
+
+// HTML
+
+The name is <span data-bind="text: fullName"></span>
