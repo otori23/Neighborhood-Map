@@ -1,0 +1,51 @@
+
+
+1) How dependency tracking works
+
+- Whenever you declare a computed observable, KO immediately invokes its evaluator function to get its initial value.
+
+- While the evaluator function is running, KO sets up a subscription to any observables (including other computed observables) that the evaluator reads. The subscription callback is set to cause the evaluator to run again, looping the whole process back to step 1 (disposing of any old subscriptions that no longer apply).
+
+- KO notifies any subscribers about the new value of your computed observable.
+
+2) Controlling dependencies using peek
+
+- The peek function lets you access an observable or computed observable without creating a dependency.
+
+ko.computed(function() {
+    var params = {
+        page: this.pageIndex(),
+        selected: this.selectedItem.peek()
+    };
+    $.getJSON('/Some/Json/Service', params, this.currentPageData);
+}, this);
+
+- in the example above, this.selectedItem is not a dependency of the computed observable
+
+- i.e. eval function for computed observable will run when this.pageIndex changes but not when this,selectedItem changes
+
+3) Ignoring dependencies within a computed - ko.ignoreDependencies
+
+- use ko.ignoreDependencies for scenarios where you want to execute code within a computed that should not contribute to that computed’s dependencies
+
+- ko.ignoreDependencies( callback, callbackTarget, callbackArgs );
+
+4) Circular dependencies
+
+- analogous to having two spreadsheet cells that are computed as functions of each other
+- It would lead to an infinite evaluation loop
+
+4a) Avoiding infinite loops caused by cycles
+
+- So what does Knockout do if you have a cycle in your dependency graph? 
+
+- It avoids infinite loops by enforcing the following rule: 
+- Knockout will not restart evaluation of a computed while it is already evaluating. 
+
+- It’s relevant in two situations: 
+- when two computed observables are dependent on each other
+- when a computed observable writes to another observable on which it has a dependency
+
+4b) peek function  (either directly or via a dependency chain)
+
+- you can use the peek function described above to avoid dependency cycles

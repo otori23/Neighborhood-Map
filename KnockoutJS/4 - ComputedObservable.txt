@@ -1,4 +1,8 @@
 
+0) Reference
+
+http://knockoutjs.com/documentation/computed-reference.html
+
 1) Computed Observables
 
 - an observable whose value depends on the value of other observables
