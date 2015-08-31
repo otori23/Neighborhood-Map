@@ -1,0 +1,216 @@
+
+0) Text and Apperance Bindings
+
+- visible
+- text
+- html
+- css
+- style
+- attr
+
+0a) Bindings and their values
+
+- you can use arbitrary JavaScript expressions or functions as binding parameter values 
+- KO will evaluate them and use the resulting values to determine the appropriate
+- if your parameter references an observable value, the binding will update the styles whenever the observable value changes. 
+- if the parameter doesn’t reference an observable value, it will only set the styles once and will not update them later.
+
+1) The "visible" binding
+
+- The visible binding causes the associated DOM element to become hidden or visible according to the value you pass to the binding.
+
+<div data-bind="visible: shouldShowMessage">
+    You will see this message only when "shouldShowMessage" holds a true value.
+</div>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        shouldShowMessage: ko.observable(true) // Message initially visible
+    };
+    viewModel.shouldShowMessage(false); // ... now it's hidden
+    viewModel.shouldShowMessage(true);  // ... now it's visible again
+</script>
+
+1a) Using functions and expressions to control element visibility
+
+You can also use a JavaScript function or arbitrary JavaScript expression as the parameter value. If you do, KO will run your function/evaluate your expression, and use the result to determine whether to hide the element.
+
+
+<div data-bind="visible: myValues().length > 0">
+    You will see this message only when 'myValues' has at least one member.
+</div>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        myValues: ko.observableArray([]) // Initially empty, so message hidden
+    };
+    viewModel.myValues.push("some value"); // Now visible
+</script>
+
+
+2) The "text" binding
+
+- The text binding causes the associated DOM element to display the text value of your parameter.
+
+2a) You can pass an arbitrary JavaScript expression to the text binding
+
+The item is <span data-bind="text: price() > 50 ? 'expensive' : 'affordable'"></span> today.
+
+2b) Containerless syntax - <!--ko--> and <!--/ko--> 
+
+- comments act as start/end markers, defining a “virtual element” that contains the markup inside
+- Knockout understands this virtual element syntax and binds as if you had a real container element
+
+2c) Using “text” without a container element
+
+For example, you’re not allowed to include other elements within an option element, so the following will not work.
+
+<select data-bind="foreach: items">
+    <option>Item <span data-bind="text: name"></span></option>
+</select>
+
+To handle this, you can use the containerless syntax, which is based on comment tags.
+
+<select data-bind="foreach: items">
+    <option>Item <!--ko text: name--><!--/ko--></option>
+</select>
+
+3) The "html" binding
+
+- the html binding causes the associated DOM element to display the HTML specified by your parameter
+- typically this is useful when values in your view model are actually strings of HTML markup that you want to render
+- this binding sets your element’s content using innerHTML
+
+-- Example --
+
+<div data-bind="html: details"></div>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        details: ko.observable() // Initially blank
+    };
+    viewModel.details("<em>For further details, view the report <a href='report.html'>here</a>.</em>"); // HTML content appears
+</script>
+
+3a) "html" vs "text" binding
+
+- "html": can contain markup
+- "text": no markup; just the text (the html tags are removed)
+- think innerHTML vs innerText in DOM
+
+4) The "css" binding
+
+- The css binding adds or removes one or more named CSS classes to the associated DOM element.
+
+- the example below will apply the CSS class profitWarning whenever the currentProfit value dips below zero, and remove that class whenever it goes above zero.
+
+4a) Example with static classes
+
+<div data-bind="css: { profitWarning: currentProfit() < 0 }">
+   Profit Information
+</div>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        currentProfit: ko.observable(150000) // Positive value, so initially we don't apply the "profitWarning" class
+    };
+    viewModel.currentProfit(-50); // Causes the "profitWarning" class to be applied
+</script>
+
+4b) Example with dynamic classes
+
+<div data-bind="css: profitStatus">
+   Profit Information
+</div>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        currentProfit: ko.observable(150000)
+    };
+ 
+    // Evalutes to a positive value, so initially we apply the "profitPositive" class
+    viewModel.profitStatus = ko.pureComputed(function() {
+        return this.currentProfit() < 0 ? "profitWarning" : "profitPositive";
+    }, viewModel);
+ 
+    // Causes the "profitPositive" class to be removed and "profitWarning" class to be added
+    viewModel.currentProfit(-50);
+</script>
+
+4c) Multiple classes
+
+- You can set multiple CSS classes at once. For example, if your view model has a property called isSevere,
+
+<div data-bind="css: { profitWarning: currentProfit() < 0, majorHighlight: isSevere }">
+
+4d) Multiple classes with same value
+
+- You can even set multiple CSS classes based on the same condition by wrapping the names in quotes like:
+- notice 'major' and highlight are different classes
+
+<div data-bind="css: { profitWarning: currentProfit() < 0, 'major highlight': isSevere }">
+
+4c) Applying CSS classes whose names aren’t legal JavaScript variable names
+
+- Don't Write: <div data-bind="css: { my-class: someValue }">...</div>
+- Do Write: <div data-bind="css: { 'my-class': someValue }">...</div>
+
+5) The "style" binding
+
+- the style binding adds or removes one or more style values to the associated DOM element
+- probably better to use the css binding to maintian separation of concerns
+
+Example
+
+<div data-bind="style: { color: currentProfit() < 0 ? 'red' : 'black' }">
+   Profit Information
+</div>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        currentProfit: ko.observable(150000) // Positive value, so initially black
+    };
+    viewModel.currentProfit(-50); // Causes the DIV's contents to go red
+</script>
+
+5a) You can set multiple style values at once
+
+<div data-bind="style: { color: currentProfit() < 0 ? 'red' : 'black', fontWeight: isSevere() ? 'bold' : '' }">...</div>
+
+5b) Applying styles whose names aren’t legal JavaScript variable names
+
+- Don’t write { font-weight: someValue }; do write { fontWeight: someValue }
+- Don’t write { text-decoration: someValue }; do write { textDecoration: someValue }
+
+6) The "attr" binding
+
+- the attr binding provides a generic way to set the value of any attribute for the associated DOM element
+- e.g. when you need to set the title attribute of an element, the src of an img tag, or the href of a link based on values in your view model
+- the attribute value being updated automatically whenever the corresponding model property changes
+
+== Example ==
+
+<a data-bind="attr: { href: url, title: details }">
+    Report
+</a>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        url: ko.observable("year-end.html"),
+        details: ko.observable("Report including final year-end statistics")
+    };
+</script>
+
+6a) Applying attributes whose names aren’t legal JavaScript variable names
+
+- Don't write: <div data-bind="attr: { data-something: someValue }">...</div>
+- Do write: <div data-bind="attr: { 'data-something': someValue }">...</div>
+
+6b) Using reserved words as attribute names in older browsers
+
+- Don't write: <input data-bind="attr: { for: someValue }" />
+- Do write: <input data-bind="attr: { 'for': someValue }" />
+
+6c) You can find a good list of reserved words on Mozilla’s MDN page here
+
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords
