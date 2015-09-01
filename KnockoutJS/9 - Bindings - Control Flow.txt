@@ -1,0 +1,158 @@
+
+1) The "foreach" binding
+
+- the foreach binding duplicates a section of markup for each entry in an array, and binds each copy of that markup to the corresponding array item 
+
+- this is especially useful for rendering lists or tables
+
+- assuming your array is an observable array, whenever you later add, remove, or re-order array entries, the binding will efficiently update the UI to match 
+
+- can use a native (static) js array with foreach binding, but don't get automatic UI refresh
+
+- inserting or removing more copies of the markup, or re-ordering existing DOM elements, without affecting any other DOM elements
+
+- you can arbitrarily nest any number of foreach bindings along with other control-flow bindings such as if and with
+
+2) Iterating over static array
+
+<table>
+    <thead>
+        <tr><th>First name</th><th>Last name</th></tr>
+    </thead>
+    <tbody data-bind="foreach: people">
+        <tr>
+            <td data-bind="text: firstName"></td>
+            <td data-bind="text: lastName"></td>
+        </tr>
+    </tbody>
+</table>
+ 
+<script type="text/javascript">
+    ko.applyBindings({
+        people: [
+            { firstName: 'Bert', lastName: 'Bertington' },
+            { firstName: 'Charles', lastName: 'Charlesforth' },
+            { firstName: 'Denise', lastName: 'Dentiste' }
+        ]
+    });
+</script>
+
+3) Iterating over observable array
+
+===== Source code: View =====
+
+<h4>People</h4>
+<ul data-bind="foreach: people">
+    <li>
+        Name at position <span data-bind="text: $index"> </span>:
+        <span data-bind="text: name"> </span>
+        <a href="#" data-bind="click: $parent.removePerson">Remove</a>
+    </li>
+</ul>
+<button data-bind="click: addPerson">Add</button>
+
+===== Source code: View model =====
+
+function AppViewModel() {
+    var self = this;
+ 
+    self.people = ko.observableArray([
+        { name: 'Bert' },
+        { name: 'Charles' },
+        { name: 'Denise' }
+    ]);
+ 
+    self.addPerson = function() {
+        self.people.push({ name: "New at " + new Date() });
+    };
+ 
+    self.removePerson = function() {
+        self.people.remove(this);
+    }
+}
+ 
+ko.applyBindings(new AppViewModel());
+
+4) foreach: JS Object Literal
+
+- pass a JavaScript object literal with a property called data which is the array you wish to iterate over
+
+<ul data-bind="foreach: { data: people, as: 'person' }"></ul>
+
+5) Referring to each array entry using $data
+
+- $data is a special context property 
+- within a foreach block, $data means “the current item”
+- in previous examples, bindings within the foreach block directly refered to properties on the array entries
+- e.g. the firstName and lastName properties on each array entry (see item #2)
+
+<ul data-bind="foreach: months">
+    <li>
+        The current item is: <b data-bind="text: $data"></b>
+    </li>
+</ul>
+ 
+<script type="text/javascript">
+    ko.applyBindings({
+        months: [ 'Jan', 'Feb', 'Mar', 'etc' ]
+    });
+</script>
+
+5a) <td data-bind="text: $data.firstName"></td>
+
+- works but is not necessary
+- within the foreach block, the context changes to that of the array entry
+
+6) Using $index, $parent, and other context properties
+
+6a) $index
+
+- refers to the zero-based index of the current array item
+- is an observable and is updated whenever the index of the item changes 
+- e.g., if items are added to or removed from the array
+
+6b) $parent
+
+- use $parent to refer to data from outside the foreach
+- i.e. change the context from the object that is the array item ($data) to the object that contains the array itself
+which is in most cases the view model itself
+
+7) Binding Context
+
+- think of it as the JS object whose properties I will be refering to directly
+
+8) Using “as” to give an alias to “foreach” items
+
+- in some cases though, it may be useful to give the current item a more descriptive name using the 'as' option
+
+<ul data-bind="foreach: { data: people, as: 'person' }"></ul>
+
+- remember to pass a string literal value to as (e.g., as: 'person', not as: person)
+- because you are giving a name for a new variable, not reading the value of a variable that already exists
+
+8a) When to use 'as'
+
+- can be especially useful in scenarios where you have nested foreach blocks ... 
+- and you need to refer to an item declared at a higher level in the hierarchy 
+
+<ul data-bind="foreach: { data: categories, as: 'category' }">
+    <li>
+        <ul data-bind="foreach: { data: items, as: 'item' }">
+            <li>
+                <span data-bind="text: category.name"></span>:
+                <span data-bind="text: item"></span>
+            </li>
+        </ul>
+    </li>
+</ul>
+ 
+<script>
+    var viewModel = {
+        categories: ko.observableArray([
+            { name: 'Fruit', items: [ 'Apple', 'Orange', 'Banana' ] },
+            { name: 'Vegetables', items: [ 'Celery', 'Corn', 'Spinach' ] }
+        ])
+    };
+    ko.applyBindings(viewModel);
+</script>
+
