@@ -385,4 +385,166 @@ ko.applyBindings(new AppViewModel());
 
 17) The "component" binding
 
-- the component binding injects a specified component into an element, and optionally passes parameters to it.
+- the component binding injects a specified component into an element, and optionally passes parameters to it
+- like grouping a view model object and markup template (HTML) into a single unit
+- the template bindings are written wrt the attached view model
+ 
+Source code: View
+
+<h4>First instance, without parameters</h4>
+<div data-bind='component: "message-editor"'></div>
+ 
+<h4>Second instance, passing parameters</h4>
+<div data-bind='component: {
+    name: "message-editor",
+    params: { initialText: "Hello, world!" }
+}'></div>
+
+Source code: View model
+
+ko.components.register('message-editor', {
+    viewModel: function(params) {
+        this.text = ko.observable(params && params.initialText || '');
+    },
+    template: 'Message: <input data-bind="value: text" /> '
+            + '(length: <span data-bind="text: text().length"></span>)'
+});
+ 
+ko.applyBindings();
+
+18) Two ways to use component binding
+
+- Shorthand syntax
+- Full syntax
+
+18a) Shorthand syntax
+
+- if you pass just a string, it is interpreted as a component name
+- the named component is then injected without supplying any parameters to it
+
+<div data-bind='component: "my-component"'></div>
+
+- the shorthand value can also be observable
+- in this case, if it changes, the component binding will dispose the old component instance, and inject the newly-referenced component
+
+<div data-bind='component: observableWhoseValueIsAComponentName'></div>
+
+18b) Full syntax
+
+- instead of passing a string name to the the component binding
+- pass an object with the following properties:
+
+name — the name of the component to inject. Again, this can be observable.
+params — an object that will be passed on to the component. Typically this is a key-value object containing multiple parameters, and is typically received by the component’s viewmodel constructor.
+
+<div data-bind='component: {
+    name: "shopping-cart",
+    params: { mode: "detailed-list", items: productsList }
+}'></div>
+
+Note that whenever a component is removed (either because the name observable changed, or because an enclosing control-flow binding removed the entire element), the removed component is disposed.
+
+19) Component lifecycle
+
+- your component loaders are asked to supply the viewmodel factory and template
+- the component template is cloned and injected into the container element
+- if the component has a viewmodel, it is instantiated
+- the viewmodel is bound to the view
+- the component is active
+- the component is torn down, and the viewmodel is disposed
+
+20) Template-only components
+
+- components usually have viewmodels, but they don’t necessarily have to
+- a component can specify just a template
+- in this case, the object to which the component’s view is bound is the params object that you passed to the component binding
+
+=== Example ===
+
+ko.components.register('special-offer', {
+    template: '<div class="offer-box" data-bind="text: productName"></div>'
+});
+
+… can be injected with:
+
+<div data-bind='component: {
+     name: "special-offer-callout",
+     params: { productName: someProduct.name }
+}'></div>
+
+21) Using component without a container element
+
+<!-- ko component: "message-editor" -->
+<!-- /ko -->
+
+… or passing parameters:
+
+<!-- ko component: {
+    name: "message-editor",
+    params: { initialText: "Hello, world!", otherParam: 123 }
+} -->
+<!-- /ko -->
+
+22) Passing markup to components
+
+The element you attach a component binding to may contain further markup. For example,
+
+<div data-bind="component: { name: 'my-special-list', params: { items: someArrayOfPeople } }">
+    <!-- Look, here's some arbitrary markup. By default it gets stripped out
+         and is replaced by the component output. -->
+    The person <em data-bind="text: name"></em>
+    is <em data-bind="text: age"></em> years old.
+</div>
+
+Although the DOM nodes in this element will be stripped out and not bound by default, they are not lost. Instead, they are supplied to the component (in this case, my-special-list), which can include them in its output however it wishes.
+
+23) Disposal and memory management
+
+Optionally, your viewmodel class may have a dispose function. If implemented, Knockout will call this whenever the component is being torn down and removed from the DOM 
+
+23a) Details of 'dispose'
+
+- you must use dispose to release any resources that aren’t inherently garbage-collectable, e.g.
+
+- setInterval callbacks will continue to fire until explicitly cleared (use clearInterval)
+- ko.computed properties continue to receive notifications from their dependencies until explicitly disposed
+- Subscriptions to observables continue to fire until explicitly disposed
+- Manually-created event handlers on external DOM elements, if created inside a createViewModel function (or even inside a regular component viewmodel, although to fit the MVVM pattern you shouldn’t) must be removed
+
+23b) Managing disposals - best practices
+
+- to avoid having to remember which things need disposal, you may prefer to use pureComputed wherever possible, and explicitly dispose all other computeds/subscriptions whether technically necessary or not
+
+=== Example ===
+
+var someExternalObservable = ko.observable(123);
+ 
+function SomeComponentViewModel() {
+    this.myComputed = ko.computed(function() {
+        return someExternalObservable() + 1;
+    }, this);
+ 
+    this.myPureComputed = ko.pureComputed(function() {
+        return someExternalObservable() + 2;
+    }, this);
+ 
+    this.mySubscription = someExternalObservable.subscribe(function(val) {
+        console.log('The external observable changed to ' + val);
+    }, this);
+ 
+    this.myIntervalHandle = window.setInterval(function() {
+        console.log('Another second passed, and the component is still alive.');
+    }, 1000);
+}
+ 
+SomeComponentViewModel.prototype.dispose = function() {
+    this.myComputed.dispose();
+    this.mySubscription.dispose();
+    window.clearInterval(this.myIntervalHandle);
+    // this.myPureComputed doesn't need to be manually disposed.
+}
+ 
+ko.components.register('your-component-name', {
+    viewModel: SomeComponentViewModel,
+    template: 'some template'
+});
