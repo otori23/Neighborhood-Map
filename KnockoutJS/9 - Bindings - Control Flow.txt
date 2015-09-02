@@ -156,3 +156,145 @@ which is in most cases the view model itself
     ko.applyBindings(viewModel);
 </script>
 
+9) Using foreach without a container element
+
+- remember the "containerless control flow syntax": <!-- ko --> and <!-- /ko -->
+- use when you don’t have any container element on which to put a foreach binding
+
+== Example ==
+<ul>
+    <li class="header">Header item</li>
+    <!-- The following are generated dynamically from an array -->
+    <li>Item A</li>
+    <li>Item B</li>
+    <li>Item C</li>
+</ul>
+
+- can’t put foreach: binding on the <ul> because then you’d be duplicating the header item
+- to handle this, you can use the containerless control flow syntax
+
+<ul>
+    <li class="header">Header item</li>
+    <!-- ko foreach: myItems -->
+        <li>Item <span data-bind="text: $data"></span></li>
+    <!-- /ko -->
+</ul>
+ 
+<script type="text/javascript">
+    ko.applyBindings({
+        myItems: [ 'A', 'B', 'C' ]
+    });
+</script>
+
+10) Destroyed entries are hidden by default
+
+Sometimes you may want to mark an array entry as deleted, but without actually losing record of its existence. This is known as a non-destructive delete. For details of how to do this, see the destroy function on observableArray.
+
+By default, the foreach binding will skip over (i.e., hide) any array entries that are marked as destroyed. If you want to show destroyed entries, use the includeDestroyed option. For example,
+
+<div data-bind='foreach: { data: myArray, includeDestroyed: true }'>
+    ...
+</div>
+
+11) Post-processing or animating the generated DOM elements
+
+- if you need to run some further custom logic on the generated DOM elements, you can use any of the afterRender/afterAdd/beforeRemove/beforeMove/afterMove callbacks described below
+
+- these callbacks are only intended for triggering animations related to changes in a list
+
+== EXAMPLE: afterAdd callback; requires JQuery color plubing ==
+
+<ul data-bind="foreach: { data: myItems, afterAdd: yellowFadeIn }">
+    <li data-bind="text: $data"></li>
+</ul>
+ 
+<button data-bind="click: addItem">Add</button>
+ 
+<script type="text/javascript">
+    ko.applyBindings({
+        myItems: ko.observableArray([ 'A', 'B', 'C' ]),
+        yellowFadeIn: function(element, index, data) {
+            $(element).filter("li")
+                      .animate({ backgroundColor: 'yellow' }, 200)
+                      .animate({ backgroundColor: 'white' }, 800);
+        },
+        addItem: function() { this.myItems.push('New item'); }
+    });
+</script>
+
+12) The "if" binding
+
+- the if binding causes a section of markup to appear in your document 
+- the other data-bind attributes of the markup is applied only when the if binding expression evaluates to true
+
+12a) if vs visible
+
+12b) visible
+
+- the contained markup always remains in the DOM and always has its data-bind attributes applied 
+- the visible binding just uses CSS to toggle the container element’s visiblity
+
+12c) if
+
+- physically adds or removes the contained markup in your DOM
+- only applies bindings to descendants if the expression is true
+
+== Example ==
+
+Source code: View
+
+<label><input type="checkbox" data-bind="checked: displayMessage" /> Display message</label>
+ 
+<div data-bind="if: displayMessage">Here is a message. Astonishing.</div>
+
+Source code: View model
+
+ko.applyBindings({
+    displayMessage: ko.observable(false)
+});
+
+== Example ==
+
+- it iss important to understand that the if binding really is vital to make this code work properly. 
+- without it, there would be an error when trying to evaluate capital.cityName in the context of “Mercury” where capital is null
+
+<ul data-bind="foreach: planets">
+    <li>
+        Planet: <b data-bind="text: name"> </b>
+        <div data-bind="if: capital">
+            Capital: <b data-bind="text: capital.cityName"> </b>
+        </div>
+    </li>
+</ul>
+ 
+ 
+<script>
+    ko.applyBindings({
+        planets: [
+            { name: 'Mercury', capital: null }, 
+            { name: 'Earth', capital: { cityName: 'Barnsley' } }        
+        ]
+    });
+</script>
+
+13) Using “if” without a container element
+
+<ul>
+    <li>This item always appears</li>
+    <!-- ko if: someExpressionGoesHere -->
+        <li>I want to make this item present/absent dynamically</li>
+    <!-- /ko -->
+</ul>
+
+14) The "ifnot" binding
+
+- the ifnot binding is exactly the same as the if binding
+- except that it inverts the result of whatever expression you pass to it
+
+<div data-bind="ifnot: someProperty">...</div>
+
+… is equivalent to the following:
+
+<div data-bind="if: !someProperty()">...</div>
+
+- the only reason to use ifnot instead of a negated if is just as a matter of taste: many developers feel that it looks tidier
