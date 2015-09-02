@@ -1,0 +1,130 @@
+
+1) The "click" binding
+
+- the click binding adds an event handler to the selected DOM element
+- the event handler will be invoked when the associated DOM element is clicked
+- you can reference any JavaScript function - it doesn’t have to be a function on your view model
+
+<div>
+    You've clicked <span data-bind="text: numberOfClicks"></span> times
+    <button data-bind="click: incrementClickCounter">Click me</button>
+</div>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        numberOfClicks : ko.observable(0),
+        incrementClickCounter : function() {
+            var previousCount = this.numberOfClicks();
+            this.numberOfClicks(previousCount + 1);
+        }
+    };
+</script>
+
+2) Passing a “current item” as a parameter to your handler function
+
+- when calling your handler, Knockout will supply the current model value as the first parameter
+
+<ul data-bind="foreach: places">
+    <li>
+        <span data-bind="text: $data"></span>
+        <button data-bind="click: $parent.removePlace">Remove</button>
+    </li>
+</ul>
+ 
+ <script type="text/javascript">
+     function MyViewModel() {
+         var self = this;
+         self.places = ko.observableArray(['London', 'Paris', 'Tokyo']);
+ 
+         // The current item will be passed as the first parameter, so we know which place to remove
+         self.removePlace = function(place) {
+             self.places.remove(place)
+         }
+     }
+     ko.applyBindings(new MyViewModel());
+</script>
+
+3) Accessing the event object
+
+- in some scenarios, you may need to access the DOM event object associated with your click event
+- Knockout will pass the event as the second parameter to your function
+
+<button data-bind="click: myFunction">
+    Click me
+</button>
+ 
+ <script type="text/javascript">
+    var viewModel = {
+        myFunction: function(data, event) {
+            if (event.shiftKey) {
+                //do something different when user has shift key down
+            } else {
+                //do normal action
+            }
+        }
+    };
+    ko.applyBindings(viewModel);
+</script>
+
+4) Passing more parameters
+
+<button data-bind="click: function(data, event) { myFunction('param1', 'param2', data, event) }">
+    Click me
+</button>
+
+--- same as ---
+
+<button data-bind="click: myFunction.bind($data, 'param1', 'param2')">
+    Click me
+</button>
+
+5) Allowing the default click action
+
+- if you do want to let the default click action proceed, just return true from your click handler function
+
+- By default, Knockout will prevent the click event from taking any default action
+- e.g. if you use the click binding on an a tag, the event handler will run, but the browser will not navigate to the link's href
+
+6) Preventing the event from bubbling
+
+- by default, Knockout will allow the click event to continue to bubble up to any higher level event handlers
+- e.g. if your element and a parent of that element are both handling the click event, then the click handler for both elements will be triggered
+
+- you can prevent the event from bubbling by including an additional binding that is named clickBubble and passing false to it
+
+<div data-bind="click: myDivHandler">
+    <button data-bind="click: myButtonHandler, clickBubble: false">
+        Click me
+    </button>
+</div>
+
+- normally, in this case myButtonHandler would be called first
+- then the click event would bubble up to myDivHandler
+- however, the clickBubble binding that we added with a value of false prevents the event from making it past myButtonHandler
+
+7) The "event" binding
+
+- more generic mechanisim for binding DOM events to event handlers
+
+<div>
+    <div data-bind="event: { mouseover: enableDetails, mouseout: disableDetails }">
+        Mouse over me
+    </div>
+    <div data-bind="visible: detailsEnabled">
+        Details
+    </div>
+</div>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        detailsEnabled: ko.observable(false),
+        enableDetails: function() {
+            this.detailsEnabled(true);
+        },
+        disableDetails: function() {
+            this.detailsEnabled(false);
+        }
+    };
+    ko.applyBindings(viewModel);
+</script>
+
