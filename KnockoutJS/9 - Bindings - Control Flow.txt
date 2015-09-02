@@ -298,3 +298,91 @@ ko.applyBindings({
 <div data-bind="if: !someProperty()">...</div>
 
 - the only reason to use ifnot instead of a negated if is just as a matter of taste: many developers feel that it looks tidier
+
+15) The "with" binding
+
+The with binding creates a new binding context, so that descendant elements are bound in the context of a specified object.
+
+Of course, you can arbitrarily nest with bindings along with the other control-flow bindings such as if and foreach.
+
+== Example 1 ==
+
+<h1 data-bind="text: city"> </h1>
+<p data-bind="with: coords">
+    Latitude: <span data-bind="text: latitude"> </span>,
+    Longitude: <span data-bind="text: longitude"> </span>
+</p>
+ 
+<script type="text/javascript">
+    ko.applyBindings({
+        city: "London",
+        coords: {
+            latitude:  51.5001524,
+            longitude: -0.1262362
+        }
+    });
+</script>
+
+=== Example 2 ===
+
+Source code: View
+
+<form data-bind="submit: getTweets">
+    Twitter account:
+    <input data-bind="value: twitterName" />
+    <button type="submit">Get tweets</button>
+</form>
+ 
+<div data-bind="with: resultData">
+    <h3>Recent tweets fetched at <span data-bind="text: retrievalDate"> </span></h3>
+    <ol data-bind="foreach: topTweets">
+        <li data-bind="text: text"></li>
+    </ol>
+ 
+    <button data-bind="click: $parent.clearResults">Clear tweets</button>
+</div>
+
+Source code: View model
+
+function AppViewModel() {
+    var self = this;
+    self.twitterName = ko.observable('@example');
+    self.resultData = ko.observable(); // No initial value
+ 
+    self.getTweets = function() {
+        var name = self.twitterName(),
+            simulatedResults = [
+                { text: name + ' What a nice day.' },
+                { text: name + ' Building some cool apps.' },
+                { text: name + ' Just saw a famous celebrity eating lard. Yum.' }
+            ];
+ 
+        self.resultData({ retrievalDate: new Date(), topTweets: simulatedResults });
+    }
+ 
+    self.clearResults = function() {
+        self.resultData(undefined);
+    }
+}
+ 
+ko.applyBindings(new AppViewModel());
+
+- note: If the expression you supply evaluates to null or undefined, descendant elements will not be bound at all, but will instead be removed from the document
+
+- this is used in the clearResults method in example 2
+
+16) Using “with” without a container element
+
+<ul>
+    <li>Header element</li>
+    <!-- ko with: outboundFlight -->
+        ...
+    <!-- /ko -->
+    <!-- ko with: inboundFlight -->
+        ...
+    <!-- /ko -->
+</ul>
+
+17) The "component" binding
+
+- the component binding injects a specified component into an element, and optionally passes parameters to it.
