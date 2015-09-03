@@ -104,7 +104,7 @@
 
 7) The "event" binding
 
-- more generic mechanisim for binding DOM events to event handlers
+- more generic mechanisim for binding DOM events to event handlers in ko view model
 
 <div>
     <div data-bind="event: { mouseover: enableDetails, mouseout: disableDetails }">
@@ -127,4 +127,158 @@
     };
     ko.applyBindings(viewModel);
 </script>
+
+8) Passing a “current item” as a parameter to your handler function
+
+- When calling your handler, Knockout will supply the current model value as the first parameter
+
+9) Accessing the event object
+
+- Knockout will pass the event as the second parameter to your event handler function
+
+10) Passing more parameters
+
+- event binding is assigne a function that wraps the event handler in the view model which accepts the extra args
+- or -
+- use event: eventhandler.bind(thisarg, 'param 1', 'param 2', ...)
+
+11) Allowing the default action
+
+- event handler should return true
+
+12) Preventing the event from bubbling
+
+- event: {event: eventhandler}, eventBubble: false 
+
+<div data-bind="event: { mouseover: myDivHandler }">
+    <button data-bind="event: { mouseover: myButtonHandler }, mouseoverBubble: false">
+        Click me
+    </button>
+</div>
+
+13) The "submit" binding
+
+- The submit binding adds an event handler so that your chosen JavaScript function will be invoked when the associated DOM element is submitted
+
+<form data-bind="submit: doSomething">
+    ... form contents go here ...
+    <button type="submit">Submit</button>
+</form>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        doSomething : function(formElement) {
+            // ... now do something
+        }
+    };
+</script>
+
+13a) "submit" binding details
+
+- when you use the submit binding on a form, Knockout will prevent the browser’s default submit action for that form
+- if you do want to let the form submit like a normal HTML form, just return true from your submit handler
+
+14) Why not just put a click handler on the submit button?
+
+- instead of using submit on the form, you could use click on the submit button 
+- however, submit has the advantage that it also captures alternative ways to submit the form, such as pressing the enter key while typing into a text box
+
+15) The enable binding
+
+- The enable binding causes the associated DOM element to be enabled only when the parameter value is true
+- This is useful with form elements like input, select, and textarea.
+
+<p>
+    <input type='checkbox' data-bind="checked: hasCellphone" />
+    I have a cellphone
+</p>
+<p>
+    Your cellphone number:
+    <input type='text' data-bind="value: cellphoneNumber, enable: hasCellphone" />
+</p>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        hasCellphone : ko.observable(false),
+        cellphoneNumber: ""
+    };
+</script>
+
+16) Using arbitrary JavaScript expressions
+
+<button data-bind="enable: parseAreaCode(viewModel.cellphoneNumber()) != '555'">
+    Do something
+</button>
+
+17) The "disable" binding
+
+- The disable binding causes the associated DOM element to be disabled only when the parameter value is true
+- This is the mirror image of the enable binding
+
+18) The "value" binding
+
+- The value binding links the associated DOM element’s value with a property on your view model. This is typically useful with form elements such as <input>, <select> and <textarea>
+
+- When the user edits the value in the associated form control, it updates the value on your view model. Likewise, when you update the value in your view model, this updates the value of the form control on screen.
+
+<p>Login name: <input data-bind="value: userName" /></p>
+<p>Password: <input type="password" data-bind="value: userPassword" /></p>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        userName: ko.observable(""),        // Initially blank
+        userPassword: ko.observable("abc"), // Prepopulate
+    };
+</script>
+
+19) valueUpdate
+
+- by default the binding performs its actions on change events
+
+- if your binding also includes a parameter called valueUpdate, this defines additional browser events KO should use to detect changes besides the change event
+
+
+20) Using valueAllowUnset with <select> elements
+
+<p>
+    Select a country:
+    <select data-bind="options: countries,
+                       optionsCaption: 'Choose one...',
+                       value: selectedCountry,
+                       valueAllowUnset: true"></select>
+</p>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        countries: ['Japan', 'Bolivia', 'New Zealand'],
+        selectedCountry: ko.observable('Latvia')
+    };
+</script>
+
+- In the above example, selectedCountry will retain the value 'Latvia', and the dropdown will be blank, because there is no corresponding option
+
+- If valueAllowUnset had not been enabled, then Knockout would have overwritten selectedCountry with undefined, so that it would match the value of the 'Choose one...' caption entry
+
+21) Updating observable and non-observable property values
+
+<!-- Two-way binding. Populates textbox; syncs both ways. -->
+<p>First value: <input data-bind="value: firstValue" /></p>
+ 
+<!-- One-way binding. Populates textbox; syncs only from textbox to model. -->
+<p>Second value: <input data-bind="value: secondValue" /></p>
+ 
+<!-- No binding. Populates textbox, but doesn't react to any changes. -->
+<p>Third value: <input data-bind="value: secondValue.length > 8" /></p>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        firstValue: ko.observable("hello"), // Observable
+        secondValue: "hello, again"         // Not observable
+    };
+</script>
+
+22) Using the value binding with the checked binding
+
+- basically use checked binding for  checkbox (<input type='checkbox'>) or radio button (<input type='radio'>)
+- don't use value binding
 
