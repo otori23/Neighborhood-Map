@@ -54,6 +54,8 @@ ko.applyBindings(myViewModel);
 
 - Optionally, you can pass a second parameter to define which part of the document you want to search for data-bind attributes. For example, ko.applyBindings(myViewModel, document.getElementById('someElementId')). This restricts the activation to the element with ID someElementId and its descendants, which is useful if you want to have multiple view models and associate each with a different region of the page.
 
+- also see, ko.applyBindingsToNode
+
 5) KO Observables
 
 - special JavaScript objects that can notify subscribers about changes
