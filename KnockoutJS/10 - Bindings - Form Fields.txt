@@ -282,3 +282,129 @@
 - basically use checked binding for  checkbox (<input type='checkbox'>) or radio button (<input type='radio'>)
 - don't use value binding
 
+23 The "textInput" binding
+
+- the textInput binding links a text box (<input>) or text area (<textarea>) with a viewmodel property
+- it providing two-way updates between the viewmodel property and the element’s value
+
+23a) textInput vs value binding
+
+- Although the value binding can also perform two-way binding between text boxes and viewmodel properties, you should prefer textInput whenever you want immediate live updates + better browser event handling support
+
+- Don’t try to use the value and textInput bindings together on the same element, as that won’t achieve anything useful
+
+24) The "hasFocus" binding
+
+- The hasFocus binding links a DOM element’s focus state with a viewmodel property. It is a two-way binding
+
+25) Example: Click-to-edit
+
+Source code: View
+
+<p>
+    Name: 
+    <b data-bind="visible: !editing(), text: name, click: edit">&nbsp;</b>
+    <input data-bind="visible: editing, value: name, hasFocus: editing" />
+</p>
+<p><em>Click the name to edit it; click elsewhere to apply changes.</em></p>
+
+Source code: View model
+
+function PersonViewModel(name) {
+    // Data
+    this.name = ko.observable(name);
+    this.editing = ko.observable(false);
+         
+    // Behaviors
+    this.edit = function() { this.editing(true) }
+}
+ 
+ko.applyBindings(new PersonViewModel("Bert Bertington"));
+
+26) The "checked" binding
+
+- The checked binding links a checkable form control — i.e., a checkbox (<input type='checkbox'>) or a radio button (<input type='radio'>) — with a property on your view model
+
+- Note: For text boxes, drop-down lists, and all non-checkable form controls, use the value binding to read and write the element’s value, not the checked binding
+
+27) checkedValue
+
+- If your binding also includes checkedValue, this defines the value used by the checked binding instead of the element’s value attribute
+
+27a) Example
+
+In the following example, the item objects themselves (not their itemName strings) will be included in the chosenItems array when their corresponding checkboxes are checked:
+
+- I guess items are removed from chosenItems when checkboxes are unchecked
+
+<!-- ko foreach: items -->
+    <input type="checkbox" data-bind="checkedValue: $data, checked: $root.chosenItems" />
+    <span data-bind="text: itemName"></span>
+<!-- /ko -->
+ 
+<script type="text/javascript">
+    var viewModel = {
+        items: ko.observableArray([
+            { itemName: 'Choice 1' },
+            { itemName: 'Choice 2' }
+        ]),
+        chosenItems: ko.observableArray()
+    };
+</script>
+
+
+28) The "options" binding
+
+- The options binding controls what options should appear in a drop-down list (i.e., a <select> element) or multi-select list (e.g., <select size='6'>)
+
+- This binding cannot be used with anything other than <select> elements
+
+28a) Additional parameters
+
+- optionsCaption: use so that nothing is selected buy default
+- optionsText: allows you to select which propertry of JS object to use as text in the <option> element
+- optionsValue: specifies what property of JS object will be used as the value attribute of <option> element
+- optionsIncludeDestroyed: non destructive delete; mark object as deleted (KO will ignore) but object still exists in memory
+- optionsAfterRender: function that will run after KO creates <option element>
+- selectedOptions: like 'value' binding for multi select list
+- valueAllowUnset: allows your model property to take values that have no corresponding entry in your <select> element
+
+29) The "selectedOptions" binding
+
+- The selectedOptions binding controls which elements in a multi-select list are currently selected. This is intended to be used in conjunction with a <select> element and the options binding.
+
+- So there are two arrays in you view model
+- one is the master list of what appears as options in the select element - "options" binding
+- the other is a dynamic list of what is actually selected - "selectedOptions" binding
+
+==== Example ====
+
+<p>
+    Choose some countries you'd like to visit: 
+    <select data-bind="options: availableCountries, selectedOptions: chosenCountries" size="5" multiple="true"></select>
+</p>
+ 
+<script type="text/javascript">
+    var viewModel = {
+        availableCountries : ko.observableArray(['France', 'Germany', 'Spain']),
+        chosenCountries : ko.observableArray(['Germany']) // Initially, only Germany is selected
+    };
+     
+    // ... then later ...
+    viewModel.chosenCountries.push('France'); // Now France is selected too
+</script>
+
+30) Letting the user select from arbitrary JavaScript objects
+
+- In this scenario, the values you can read and write using selectedOptions are those objects themselves, not their textual representations
+
+- i.e. not what is spcified by 'optionsText' binding
+
+31) The "uniqueName" binding
+
+- The uniqueName binding ensures that the associated DOM element has a nonempty name attribute. If the DOM element did not have a name attribute, this binding gives it one and sets it to some unique string value.
+
+You won’t need to use this often. It’s only useful in a few rare cases, e.g.:
+
+<input data-bind="value: someModelProperty, uniqueName: true" />
+
