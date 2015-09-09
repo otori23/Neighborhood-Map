@@ -1,0 +1,70 @@
+
+1) Components overview
+
+- components are a powerful, clean way of organizing your UI code into self-contained, reusable chunks
+- packages view and optionally view model together
+- a component definition specifies a viewModel and template
+
+1a) Benefits for Large Application
+
+- simplifies development through clear organization and encapsulation
+- helps to improve runtime performance by incrementally loading your application code and templates as needed
+
+2) Custom elements
+
+- optional, but convenient syntax for consuming components
+- alternative to using placeholder divs (with binding attributes) into which rendered compnent templates are injected
+- you can use more self-descriptive markup with custom element names (e.g., <voting-button> or <product-editor>)
+
+3) ko.components.register
+
+- use to register your components
+
+4) Example of component
+
+- normally, you’d load the view model and template from external files 
+- instead of declaring them inline like below
+
+ko.components.register('like-widget', {
+    viewModel: function(params) {
+        // Data: value is either null, 'like', or 'dislike'
+        this.chosenValue = params.value;
+         
+        // Behaviors
+        this.like = function() { this.chosenValue('like'); }.bind(this);
+        this.dislike = function() { this.chosenValue('dislike'); }.bind(this);
+    },
+    template:
+        '<div class="like-or-dislike" data-bind="visible: !chosenValue()">\
+            <button data-bind="click: like">Like it</button>\
+            <button data-bind="click: dislike">Dislike it</button>\
+        </div>\
+        <div class="result" data-bind="visible: chosenValue">\
+            You <strong data-bind="text: chosenValue"></strong> it\
+        </div>'
+}); 
+
+4a) Using the component
+
+- you can reference it from any other view in your application, either using the component binding or using a custom element
+
+5) Loading the like/dislike widget from external files, on demand
+
+ko.components.register('like-or-dislike', {
+    viewModel: { require: 'files/component-like-widget' },
+    template: { require: 'text!files/component-like-widget.html' }
+});
+
+- in most applications, you’ll want to keep component view models and templates in external files
+- if you configure Knockout to fetch them via an AMD module loader such as require.js, then they can either be preloaded (possibly bundled/minified), or incrementally loaded as needed
+
+5a) Requirements to load external files
+
+- files need to exist
+- you need to have referenced a suitable module loader library (such as require.js) or 
+- implemented a custom component loader that knows how to grab your files
+
+5b) Using the custom component
+
+- now like-or-dislike can be consumed in the same way as before...
+- using either a component binding or a custom element... <like-or-dislike>
