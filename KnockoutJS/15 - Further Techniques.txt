@@ -1,2 +1,50 @@
 
-1) Loading and Saving JSON data
+1) Loading and Saving JSON data (wrt your web app)
+
+- use whatever mechanism you want to exchange data with server
+- jQuery is a popular method
+
+2) KO role 
+
+- For saving, get your view model data into a simple JSON format so you can send it using one of the above techniques
+- For loading, update your view model using data that you’ve received using one of the above techniques
+
+3) Converting View Model Data to Plain JSON
+
+- standard JSON serializers (native JSON.serialize or json2.js) don't work cleanly on KO view model objects
+- becasue KO view model objects contain KO specific structures (observables)
+- therefore KO includes helper funtions to assist in serializing KO view model objects
+
+3a) ko.toJS 
+
+— this clones your view model’s object graph, substituting for each observable the current value of that observable, so you get a plain copy that contains only your data and no Knockout-related artifacts
+
+var plainJs = ko.toJS(viewModel);
+
+3b) ko.toJSON 
+
+— this produces a JSON string representing your view model’s data. Internally, it simply calls ko.toJS on your view model, and then uses the browser’s native JSON serializer on the result. Note: for this to work on older browsers that have no native JSON serializer (e.g., IE 7 or earlier), you must also reference the json2.js library
+
+var jsonData = ko.toJSON(viewModel);
+
+4) Updating View Model Data using JSON
+
+- best way is to load and parse the JSON using native js
+- then manually build your view model
+
+// Load and parse the JSON
+var someJSON = /* Omitted: fetch it from the server however you want */;
+var parsed = JSON.parse(someJSON);
+ 
+// Update view model properties
+viewModel.firstName(parsed.firstName);
+viewModel.pets(parsed.pets);
+
+- can automate the view model building process using the KO's mapping plugin
+
+5) Using extenders to augment observables
+
+- KO extenders provide an easy and flexible way to augment an observable (i.e. add functionality)
+- this might include adding additional properties to the observable
+- intercepting writes by placing a writable computed observable in front of the observable 
+- whatever else etc
