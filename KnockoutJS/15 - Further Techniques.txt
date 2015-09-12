@@ -73,6 +73,64 @@ this.firstName = ko.observable("Bob").extend({logChange: "first name"});
 
 - this.firstName = ko.observable(first).extend({ required: "Please enter a first name", logChange: "first name" });
 
+8) Rate-limiting observable notifications
 
+- rateLimit extender causes an observable to delay change notifications for a specified period of time
+- rate-limited observable therefore updates dependencies asynchronously
+- non rate-limited observable therefore updates dependencies asynchronously
 
+9) Reasons to use rateLimit extender 
+
+- making things respond after a certain delay
+- combining multiple changes into a single update
+- avoiding multiple Ajax requests, e.g. on a computed 
+
+10) Applying the rateLimit extender
+
+// Shorthand: Specify just a timeout in milliseconds
+someObservableOrComputed.extend({ rateLimit: 500 });
+ 
+// Longhand: Specify timeout and/or method
+someObservableOrComputed.extend({ rateLimit: { timeout: 500, method: "notifyWhenChangesStop" } });
+
+10a) possible value for 'method' parameter
+
+- notifyAtFixedRate: default value if not otherwise specified; the notification happens after the specified period of time from the first change to the observable
+
+- notifyWhenChangesStop: notification happens after no changes have occured to the observable for the specified period of time
+
+11) Using unobtrusive event handlers
+
+- the idea here is that you can attach event handlers to DOM element manually/individually using the data-bind attribute
+
+- better way is to attach the event handlers at a higher level of abstracion; e.g. using jQuery's event handling. then in the event handler provide the data for the DOM element using ko.dataFor or ko.contextFor
+
+- this way you just write the event handling code on time in a declarative fashion
+
+12) Adding custom functions using "fn"
+
+- see class diagram for inheritance structure (http://knockoutjs.com/documentation/fn.html)
+- can add custon functions to classes using fn attribute for classes
+- to attach a custom function, add it to one of the following extensibility points:
+
+-- ko.subscribable.fn
+-- ko.observable.fn
+-- ko.observableArray.fn
+-- ko.computed.fn
+
+- then, your custom function will become available on all values of that type created from that point onwards
+
+13) Extending Knockout's binding syntax using preprocessing
+
+- this is an advanced technique and not something you will normally do
+
+- you can hook into Knockout’s logic for interpreting data-bind attributes by providing a binding preprocessor for a specific binding handler (such as click, visible, or any custom binding handler)
+
+to do this, attach a preprocess function to the binding handler:
+
+ko.bindingHandlers.yourBindingHandler.preprocess = function(stringFromMarkup) {
+    // Return stringFromMarkup if you don't want to change anything, or return
+    // some other string if you want Knockout to behave as if that was the
+    // syntax provided in the original HTML
+}
 
