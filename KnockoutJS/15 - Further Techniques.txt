@@ -48,3 +48,31 @@ viewModel.pets(parsed.pets);
 - this might include adding additional properties to the observable
 - intercepting writes by placing a writable computed observable in front of the observable 
 - whatever else etc
+
+6) How to create an extender
+
+- register your extender with KO
+- target is the observable
+- new value is what you are writing to the observable
+- option is value ('first name') assigned to your extender (in this case logChange) 
+
+ko.extenders.logChange = function(target, option) {
+    target.subscribe(function(newValue) {
+       console.log(option + ": " + newValue);
+    });
+    return target;
+};
+
+- use extender by calling extend function of an observable
+
+this.firstName = ko.observable("Bob").extend({logChange: "first name"});
+
+- if the firstName observable’s value was changed to Ted, then the console would show first name: Ted
+
+7) Applying multiple extenders
+
+- this.firstName = ko.observable(first).extend({ required: "Please enter a first name", logChange: "first name" });
+
+
+
+
