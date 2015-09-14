@@ -1,0 +1,70 @@
+September 13 2015
+
+1) Get map on page
+
+2) Get places on map (use google places api)
+
+3) Build Steps
+
+- CSS preprocessing (Sass/Less -> css)
+- Transpilation (e.g. CoffeeScript/TypeScript -> Javascript)
+- Optimization (e.g. images)
+- Minification
+- Concatenation (many js files -> one js file)
+- Cache Busting
+- Unit Testing 
+- Linting
+- File watching (Trigger Browser realods, etc)
+
+4) Build Workflow from Gulp book
+
+- Set up the project
+- Copy static files to dist
+- Sass to CSS
+- Introducing Browserify
+- Starting up a development server
+- Adding basic automation
+- Error handling
+- Make it smoother with BrowserSync
+- Minification for production
+- Sourcemaps for development
+- Enjoy the automation
+- Cach Busting
+
+5) Explored Tecnologies
+
+- Bootstrap
+- Google maps API
+- KnockoutJS
+- Google places API
+
+6) Google Maps API Key
+
+AIzaSyDPw0yXOiBKXu1E7fDxNjg6BD0ANIXiSv0
+
+7) Progress so far
+
+- put map on page
+- get places from google places api
+- for each place create a marker
+- add title to each marker
+
+8) Summary
+
+- JS objects from places API is the "data" for the viewmodel
+- how to turn this effciently into KO view model (manually or mapping pluggin)?
+- add faviicon???
+- use IIFE to add click event handler to markers (so that info window displays details on location)
+- think of how to integrate KO into the whole thing; start with view model creation
+- implement list view 
+- implement search bar
+- look at other projects to understand how professionals structure their app
+- what are my build steps for this projects
+
+
+// TODO
+
+- Bower ???
+- Browserify ???
+- RequireJS ??? (e.g. for AMD)
+- underscore ???
