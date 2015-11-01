@@ -68,3 +68,50 @@ AIzaSyDPw0yXOiBKXu1E7fDxNjg6BD0ANIXiSv0
 - Browserify ???
 - RequireJS ??? (e.g. for AMD)
 - underscore ???
+- CSS
+
+1) CSS
+
+a) Always remember to CSS Reset
+
+- the styles basically remove all margins, padding, and font size from the most common block-level elements
+- the reset styles eliminate many of the cross-browser display problems you’ll encounter related to these properties
+- at a bare minimum, you should always include this set of styles in every style sheet you create
+- probably the most important properties are the margin and padding settings in the first style
+- there’s enough cross-browser weirdness related to those two properties that you should always zero these out and start fresh
+
+b) Floating list-view like Side-bar note for Tutorial 7
+
+- Chapter 7 tutorial: will want the list-view of places to be positioned like the note in this chapter's tutorial
+- floating with box-shadow and some type of margin spacing it from browser's edge
+
+c) Setting Width of List View in tutorial for chapter 6
+
+- see how the list is styled (width + float) in tutorial for Chapter 6
+
+d) Chapter 9 - Vertical List based Nav construction is similar to needed list view
+
+
+Octorber 27 2015
+
+1) Font Icons for Magnifying Glass & Hamburger
+
+- use iconmoon's web app to generate a font file for the glyphs you want
+- download the font files, sample css, and demo locally
+- the iconmoon web app gives you the html snippet needed to include the fonts in your html 
+- link to the with that contians the @font-face directive for your fonts
+- add html for you font into your project
+- later can use the import the json that is part of the download package to the iconmoon site
+- then you can retrieve the html snippet for you project
+
+- List of icon fonts
+https://css-tricks.com/flat-icons-icon-fonts/
+
+- General information on how to use iconmoon
+https://css-tricks.com/html-for-icon-font-usage/
+
+- Icon moons web site (see the docs section)
+https://icomoon.io/
+
+- Icon moons app for generating font files
+https://icomoon.io/app/#/select
