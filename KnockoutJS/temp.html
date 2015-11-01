@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script type='text/javascript' src='knockout-3.3.0.js'></script>
+ </head>
+
+ <body>
+	<div data-bind="allowBindings: true">
+		<!-- This will display Replacement, because bindings are applied -->
+		<div data-bind="text: 'Replacement'">Original</div>
+	</div>
+ 
+	<div data-bind="allowBindings: false">
+		<!-- This will display Original, because bindings are not applied -->
+		<div data-bind="text: 'Replacement'">Original</div>
+	</div>
+
+	<script type="text/javascript">
+		ko.bindingHandlers.allowBindings = {
+			init: function(elem, valueAccessor) {
+				// Let bindings proceed as normal *only if* my value is false
+				var shouldAllowBindings = ko.unwrap(valueAccessor());
+				return { controlsDescendantBindings: !shouldAllowBindings };
+			}
+		};
+		ko.applyBindings();
+	</script>
+
+ </body>
+</html>
