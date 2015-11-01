@@ -1,139 +1,156 @@
 <!doctype html>
 <html lang="en">
-  <head>
-  	<meta charset="utf-8">
-  	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<head>
+		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width,initial-scale=1">
+  		<title>Neighborhood App Views</title>
+  		<link href="css/main.css" rel="stylesheet">
+  		<link href="css/font-icons.css" rel="stylesheet">
+  		<style>
+  			html { 
+  				font-family: "Arial Black", Arial, Helvetica, sans-serif;
+  				font-size: 62.5%; 
+  			}
 
-  	<style>
-  		/*
-  		* {
-    		border: 1px solid red !important;
-		}	
+  			header {
+  				background-color: rgba(0,0,0,0.25);
+  				padding: 5px;
+  				font-size: 2.75em;
+  			}
 
-		* {
-    		-webkit-box-sizing: border-box;
-    		-moz-box-sizing: border-box;
-    		-ms-box-sizing: border-box;
-    		box-sizing: border-box;
-		}
-		*/
-		body, html {
-  			margin: 0;
-  			padding: 0;
-  			width: 100%;
-  			height: 100%;
-	  	}
+  			header .header-content {
+  				width: 100%;
+  				margin: 0 auto;
+          position: relative;
+  			}
 
-	  	body {
-  			font-family: Roboto;
-  			font-size: 12px;
-  			color: #424242;
-	  	}
+  			header h1 {
+  				display: none;
+  				text-shadow: 4px 3px 6px rgba(0,0,0,.5);
+  				color: rgb(25,25,25);
+  			}
 
-	  	h1, h2, h3, h4, h5 {
-  			margin: 0; 
-		}
+  			header .header-controls {
+          position: relative;
+  			}
 
-		div {
-  			box-sizing: border-box;
-		}
+  			header .search-bar {
+  				background-color: rgb(255,255,255);
+  				display: inline-block;
+  				border: 3px solid black;
+  				padding: 2px;
+  				border-radius: 10px;
+  				font-size: 0.75em;
+  				vertical-align: 7.5%;
+  			}
 
-		ul {
-  			list-style: none;
-  			padding: 0;
-  			margin: 0;
-		}
+  			header .search-bar:hover {
+  				box-shadow: 0 0 10px black;
+  				-webkit-box-shadow: 0 0 10px black;
+  			}
 
-	  	.header {
-	  		background-color: rgba(0, 0, 0, 0.95);
-	  		width: 100%;
-	  		min-height: 48px;
-	  		position: fixed;
-	  		top: 0px;
-	  		left: 0px;
-	  	}
+  			header .icon-search {
+  				vertical-align: top;
+  			}
 
-  	  	.header-menu {
-  	    	display: none;
-	  	}
+  			header input[type="text"] {
+  				vertical-align: top;
+  				font-size: inherit;
+  				border-style: none;
+  			}
 
-	  	.nav {
-  		    z-index: 10;
-			background-color: #ffffff;
-			width: 300px;
-			position: fixed;
-			top: 50px;
-			left: 10px;
-	  	}
+  			header input[type="text"]:focus {
+  				outline: none;
+  			}
 
-	  	.nav__list {
-		    width: 100%;
-		    padding: 0;
-		    margin: 0;
-		}
+  			header .hamburger {
+  				display: inline-block;
+  				cursor: pointer;
+          position: absolute;
+          right: 0;				
+  			}
 
-		.nav__item {
-		    display: list-item;
-		    border: 1px solid rgba(0, 0, 0, 0.5);
-		    width: 100%;
-		    text-align: left;
-		    line-height: 24px;
-		    padding: 24px;
-		    text-transform: uppercase;
-		}
+  			header .hamburger:hover {
+  				text-shadow: 0 0 6px rgba(0,0,0,0.65);				
+  			}
 
-	  	@media screen and (max-width: 549px) {
-	  		.header-menu  {
-	  	  		display: inline-block;
-		  		position: inherit;
-		  		top: 0px;
-		  		left: 0px;
-		  		padding: 0.5em;
-			}
+        .places-list {
+          width: 300px;
+          height: 400px;
+          margin: 5px 0 0 5px;
+          border-right: 10px solid rgb(50,50,50);
+          background-color: rgb(150,150,150);
 
-			.header-menu svg {
-		  		width: 32px;
-		  		fill: #E0E0E0;
-			}
-		}
-  	</style>
-  </head>
-  <body>
-  	<div class="header">
-  		<div id="menu" class="header-menu">
-  			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  				<path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
-        	</svg>
-      	</div>
-  	</div>
+          position: relative; /* means nav will cover exisiting content when it comes into view */
+          transform: translate(-305px, 0); /* use translate to move it off the screen */
+          transition: transform 0.5s ease; /* add tranisiton of .5 secs for nice animation */
+        }
 
-  	<div id="drawer" class="nav">
-      <ul class="nav__list">
-        <li class="nav__item"><a href="#">News</a></li>
-        <li class="nav__item"><a href="#">Events</a></li>
-        <li class="nav__item"><a href="#">Culture</a></li>
-        <li class="nav__item"><a href="#">Blog</a></li>
-      </ul>
+        .places-list.open-places-list {
+          transform: translate(0, 0);
+          border-right: none;
+        }
+
+        @media screen and (min-width: 450px) {
+          header {
+            padding: 5px;
+            font-size: 4em;
+          }
+        }
+
+        @media screen and (min-width: 950px){
+          header h1 {
+            display: inline-block;
+          }
+
+          header .header-controls {
+            display: inline-block;
+            position: absolute;
+            right: 0;
+          }
+
+          header .hamburger {
+            display: none;
+          }
+
+          .places-list {
+            transform: translate(0, 0);
+            border-right: none;
+          }
+        }
+  		</style>
+	  	<!--[if lt IE 9]>
+      <script src="html5shiv.js"></script>
+      <![endif]-->
+	</head>
+	<body>
+		<header>
+			<div class="header-content">
+				<h1>Application Title</h1>
+			
+				<div class="header-controls">
+					<div class="search-bar">
+						<span class="icon-search"></span>
+						<input type="text" placeholder="Filter by Name/Type">
+					</div>
+			
+					<div class="hamburger">
+						<span class="icon-menu"></span>
+					</div>
+				</div>
+		</div>
+		</header>
+
+    <div class="places-list">
     </div>
 
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-  	<pre>
-
-
-  		<h2>Unicode</h2>
-		<div>&#9776; Menu </div>
-		
-  	</pre>
-  </body>
+    <script>
+      var hamburger = document.querySelector(".hamburger");
+      var placesList = document.querySelector(".places-list");
+      hamburger.addEventListener('click', function(e) {
+        placesList.classList.toggle('open-places-list');
+        e.stopPropagation();
+      });
+    </script>
+	</body>
 </html>
