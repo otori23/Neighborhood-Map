@@ -71,7 +71,8 @@
 
         .places-section {
           width: 300px;
-          max-height: 400px;
+          /*max-height: 400px;*/
+          width: 300px;
           margin: 5px 0 0 5px;
           border-right: 10px solid rgb(50,50,50);
           background-color: rgba(0,0,0,0.25);
@@ -82,7 +83,6 @@
           transition: transform 0.5s ease; /* add tranisiton of .5 secs for nice animation */
 
           box-shadow: 0 0 10px black;
-          overflow-y: auto;
         }
 
         .places-section.open-places-section {
@@ -97,6 +97,11 @@
           padding: 5px;
           border-bottom: 2px solid black;
         } 
+
+        .places-section .places-list {
+          max-height: 400px;
+          overflow-y: auto;
+        }
 
         .places-section ul {
           font-size: 2em; 
@@ -177,28 +182,30 @@
 
     <div class="places-section">
       <h1>Application Title</h1>
-      <ul>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-        <li><a href="#">Place 1</a></li>
-      </ul>      
+      <div class="places-list">
+        <ul>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+          <li><a href="#">Place 1</a></li>
+        </ul>
+      </div>      
     </div>
 
     <script>
       var hamburger = document.querySelector(".hamburger");
-      var placesList = document.querySelector(".places-section");
+      var placesSection = document.querySelector(".places-section");
       hamburger.addEventListener('click', function(e) {
-        placesList.classList.toggle('open-places-section');
+        placesSection.classList.toggle('open-places-section');
         e.stopPropagation();
       });
     </script>
