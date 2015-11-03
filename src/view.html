@@ -69,30 +69,59 @@
   				text-shadow: 0 0 6px rgba(0,0,0,0.65);				
   			}
 
-        .places-list {
+        .places-section {
           width: 300px;
-          height: 400px;
+          max-height: 400px;
           margin: 5px 0 0 5px;
           border-right: 10px solid rgb(50,50,50);
           background-color: rgba(0,0,0,0.25);
+          border-radius: 5px;
 
           position: relative; /* means nav will cover exisiting content when it comes into view */
           transform: translate(-305px, 0); /* use translate to move it off the screen */
           transition: transform 0.5s ease; /* add tranisiton of .5 secs for nice animation */
+
+          box-shadow: 0 0 10px black;
+          overflow-y: auto;
         }
 
-        .places-list.open-places-list {
+        .places-section.open-places-section {
           transform: translate(0, 0);
           border-right: none;
         }
 
-        .places-list h1 {
+        .places-section h1 {
           font-size: 3em;
           text-shadow: 4px 3px 6px rgba(0,0,0,.5);
           color: rgb(25,25,25);
           padding: 5px;
-          border-bottom: 1px solid black;
+          border-bottom: 2px solid black;
         } 
+
+        .places-section ul {
+          font-size: 2em; 
+          list-style-type: none;
+          padding-left: 0;
+        }
+
+        .places-section li {
+          border-bottom: 1px solid black;
+        }
+
+        .places-section li:last-child {
+          border-bottom: none;
+        }
+
+        .places-section a {
+          text-decoration: none;
+          display: block;
+          padding: 10px;
+          color: rgb(0,0,0);
+        }
+
+        .places-section a:hover {
+          background-color: rgba(0,0,0,0.26);
+        }
 
         @media screen and (min-width: 450px) {
           header {
@@ -116,14 +145,14 @@
             display: none;
           }
 
-          .places-list {
+          .places-section {
             transform: translate(0, 0);
             border-right: none;
           }
 
-          .places-list h1 {
+          .places-section h1 {
             display: none;
-          } 
+          }
         }
   		</style>
 	  	<!--[if lt IE 9]>
@@ -146,9 +175,15 @@
 			</div>
 		</header>
 
-    <div class="places-list">
+    <div class="places-section">
       <h1>Application Title</h1>
       <ul>
+        <li><a href="#">Place 1</a></li>
+        <li><a href="#">Place 1</a></li>
+        <li><a href="#">Place 1</a></li>
+        <li><a href="#">Place 1</a></li>
+        <li><a href="#">Place 1</a></li>
+        <li><a href="#">Place 1</a></li>
         <li><a href="#">Place 1</a></li>
         <li><a href="#">Place 1</a></li>
         <li><a href="#">Place 1</a></li>
@@ -161,9 +196,9 @@
 
     <script>
       var hamburger = document.querySelector(".hamburger");
-      var placesList = document.querySelector(".places-list");
+      var placesList = document.querySelector(".places-section");
       hamburger.addEventListener('click', function(e) {
-        placesList.classList.toggle('open-places-list');
+        placesList.classList.toggle('open-places-section');
         e.stopPropagation();
       });
     </script>
