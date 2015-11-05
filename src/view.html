@@ -208,6 +208,13 @@
         placesSection.classList.toggle('open-places-section');
         e.stopPropagation();
       });
+
+      var searchBar = document.querySelector(".search-bar");
+      var textBox = document.querySelector('input[type="text"]');
+      searchBar.addEventListener('click', function(e) {
+        textBox.focus();
+        e.stopPropagation();
+      });
     </script>
 	</body>
 </html>
