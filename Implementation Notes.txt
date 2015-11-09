@@ -115,3 +115,10 @@ https://icomoon.io/
 
 - Icon moons app for generating font files
 https://icomoon.io/app/#/select
+
+
+November 08th 2015
+
+1) Add "places" tab on UI for small screens instead of thick border
+http://www.verizonwireless.com/support/knowledge-base-14613/
+
