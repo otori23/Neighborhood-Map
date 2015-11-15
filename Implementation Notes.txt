@@ -122,3 +122,25 @@ November 08th 2015
 1) Add "places" tab on UI for small screens instead of thick border
 http://www.verizonwireless.com/support/knowledge-base-14613/
 
+
+November 14th 2015
+
+1) Foursquare
+
+- client ID: 		XOVHNWG4KKKESGADD0HOE3SWYTXVWYAPWHSQFC4CO4FHE4R5
+- client secret:	FHXKIUQOFHCJUXQYECAVH3DYE50JEJZ1N1AKONXHHEMWVLZR
+- email: 		google
+- password: 		social
+- user ID: 		146126891
+
+- understand how to provide attribution
+- understand the policy and rules
+
+2) See getfoodstar.com example, on 4Square, for how to impement you apps view 
+- https://developer.foursquare.com/overview/attribution
+
+- actaully the way 4Square presents their results is what you are going for
+
+3) YottaCycle foursquare API Request
+
+https://api.foursquare.com/v2/venues/search?client_id=XOVHNWG4KKKESGADD0HOE3SWYTXVWYAPWHSQFC4CO4FHE4R5&client_secret=FHXKIUQOFHCJUXQYECAVH3DYE50JEJZ1N1AKONXHHEMWVLZR&v=20130815&ll=37.338141,-121.886366&query=recycle
