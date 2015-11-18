@@ -183,12 +183,12 @@
 			<h1>YottaCycle - Recycling Locator</h1>
 		
 			<div class="header-controls">
-				<div class="search-bar">
+				<div class="search-bar" data-bind="click: onSearchBarClick">
 					<span class="icon-search"></span>
 					<input type="text" placeholder="Recycling Options...">
 				</div>
 		
-				<div class="hamburger">
+				<div class="hamburger" data-bind="click: onHamburgerClick">
 					<span class="icon-menu"></span>
 				</div>
 			</div>
@@ -232,23 +232,8 @@
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPw0yXOiBKXu1E7fDxNjg6BD0ANIXiSv0&libraries=places&callback=initMap">
     </script>
-
-    <script>
-      var hamburger = document.querySelector(".hamburger");
-      var placesSection = document.querySelector(".places-section");
-      hamburger.addEventListener('click', function(e) {
-        placesSection.classList.toggle('open-places-section');
-        e.stopPropagation();
-      });
-
-      var searchBar = document.querySelector(".search-bar");
-      var textBox = document.querySelector('input[type="text"]');
-      searchBar.addEventListener('click', function(e) {
-        textBox.focus();
-        e.stopPropagation();
-      });
-    </script>
-
+    
+    <script src='js/knockout-3.4.0.js'></script>
     <script src="js/app.js"></script>
 <body>
 </html>
