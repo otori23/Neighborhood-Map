@@ -7,7 +7,7 @@
 	        return ko.utils.arrayFilter(self.places(), function(place) { return true; });
 	    });
 
-	    // Operations
+	    // Event Handlers
 	    self.onHamburgerClick = function() {
       		var placesSection = document.querySelector(".places-section");
       		placesSection.classList.toggle('open-places-section');
@@ -17,6 +17,14 @@
       		var textBox = document.querySelector('input[type="text"]');
         	textBox.focus();
         };
+
+        // Operations
+        var hood = new google.maps.LatLng(37.338141, -121.886366);
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: hood,
+            zoom: 12,
+            disableDefaultUI: true
+        });
 	}
 
 	ko.applyBindings(new YottaCycleAppViewModel());
