@@ -9,22 +9,28 @@
 
 	    // Event Handlers
 	    self.onHamburgerClick = function() {
-      		var placesSection = document.querySelector(".places-section");
-      		placesSection.classList.toggle('open-places-section');
+      		var $placesSection = $(".places-section");
+      		$placesSection.toggleClass('open-places-section');
 	    };
 
 	    self.onSearchBarClick = function() {
-      		var textBox = document.querySelector('input[type="text"]');
-        	textBox.focus();
+      		var $textBox = $('input[type="text"]');
+        	$textBox.focus();
         };
 
         // Operations
+
+        // Draw Map
         var hood = new google.maps.LatLng(37.338141, -121.886366);
         var map = new google.maps.Map(document.getElementById('map'), {
             center: hood,
             zoom: 12,
             disableDefaultUI: true
         });
+
+        // Load Data (From 4Square or LocalStorage)
+
+        // Draw Markers on Map
 	}
 
 	ko.applyBindings(new YottaCycleAppViewModel());
