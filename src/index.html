@@ -84,7 +84,7 @@
           width: 300px;
           margin: 5px 0 0 5px;
           border-right: 10px solid rgb(50,50,50);
-          background-color: rgba(0,0,0,0.25);
+          background-color: rgb(255,255,255);
           border-radius: 5px;
 
           position: relative; /* means nav will cover exisiting content when it comes into view */
@@ -197,20 +197,8 @@
     <div class="places-section">
       <h1>YottaCycle</h1>
       <div class="places-list">
-        <ul>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
-          <li><a href="#">Place 1</a></li>
+        <ul data-bind="foreach: filteredPlaces">
+        	<li><a href="#"><span data-bind="text: name"> </span> </a></li>
         </ul>
       </div>      
     </div>
