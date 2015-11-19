@@ -1,4 +1,4 @@
-(function() {	
+$(function() {	
 	function YottaCycleAppViewModel() {
 		// Data
 	    var self = this;
@@ -47,4 +47,4 @@
 	}
 
 	ko.applyBindings(new YottaCycleAppViewModel());
-})();
+});
