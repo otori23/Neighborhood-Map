@@ -21,7 +21,8 @@ $(function() {
         // Operations
 
         // Draw Map
-        self.hood = new google.maps.LatLng(37.338141, -121.886366);
+        //self.hood = new google.maps.LatLng(37.338141, -121.886366);
+        self.hood = new google.maps.LatLng(37.4, -121.886366);
         self.map = new google.maps.Map(document.getElementById('map'), {
             center: self.hood,
             zoom: 10,
@@ -42,29 +43,31 @@ $(function() {
   				alert("Error Loading Recycling Data");
   			}
 		});
-
-        // Draw Markers on Map
 	}
 
 	ko.bindingHandlers.drawMarker = {
 	    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-	        // This will be called when the binding is first applied to an element
-	        // Set up any initial state, event handlers, etc. here
 	        var place = valueAccessor();
 	        var unwrappedPlace = ko.unwrap(place);
-	        
 	        var marker = new google.maps.Marker({
 			    position: {lat: unwrappedPlace.location.lat, lng: unwrappedPlace.location.lng},
-			    map: allBindings.get('markerMap'),
 			    title: unwrappedPlace.name
 			});
+
+			$.data(element, "marker", marker);
 	    },
 	    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-	        // This will be called once when the binding is first applied to an element,
-	        // and again whenever any observables/computeds that are accessed change
-	        // Update the DOM element based on the supplied values here.
+	        var place = valueAccessor();
+	        var unwrappedPlace = ko.unwrap(place);
+	        var marker = $.data(element, "marker");
+	        if(!unwrappedPlace._destroy) {
+	        	marker.setMap(allBindings.get('markerMap'));
+	        }
+	        else {
+	        	marker.setMap(null);
+	        }
 	    }
 	};
-	ko.virtualElements.allowedBindings.drawMarker = true;
+
 	ko.applyBindings(new YottaCycleAppViewModel());
 });
