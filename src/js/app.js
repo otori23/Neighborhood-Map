@@ -22,7 +22,13 @@ $(function() {
         	var element = event.currentTarget;
         	var marker = $.data(element, "marker");
 			var infoWindow = $.data(element, "infoWindow");
-			infoWindow.open(self.map, marker);
+
+			if (!infoWindow.getMap()) {
+				infoWindow.open(self.map, marker);
+			}
+			else {
+				infoWindow.close();
+			}
         };
 
         // Operations
