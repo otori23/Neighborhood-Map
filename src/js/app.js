@@ -18,6 +18,13 @@ $(function() {
         	$textBox.focus();
         };
 
+        self.placeItemClicked = function(place, event) {
+        	var element = event.currentTarget;
+        	var marker = $.data(element, "marker");
+			var infoWindow = $.data(element, "infoWindow");
+			infoWindow.open(self.map, marker);
+        };
+
         // Operations
 
         // Draw Map
@@ -61,11 +68,11 @@ $(function() {
 			});
 
 	        marker.addListener('click', function() {
-    			infoWindow.open(map, marker);
+    			bindingContext.$parent.placeItemClicked(unwrappedPlace, {currentTarget: element});
   			});
 
 			$.data(element, "marker", marker);
-			$.data(element, "infoWindow", marker);
+			$.data(element, "infoWindow", infoWindow);
 	    },
 	    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 	        var place = valueAccessor();

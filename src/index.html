@@ -204,8 +204,11 @@
       <h1>YottaCycle</h1>
       <div class="places-list">
         <ul data-bind="foreach: filteredPlaces">
-        	<li><a href="#"><span data-bind="text: name"> </span> </a></li>
-        	<div data-bind="drawMarker: $data"></div>
+        	<li data-bind="drawMarker: $data, click: $parent.placeItemClicked, clickBubble: false">
+        		<a href="#">
+        			<span data-bind="text: name"> </span> 
+        		</a>
+        	</li>
         </ul>
       </div>      
     </div>
