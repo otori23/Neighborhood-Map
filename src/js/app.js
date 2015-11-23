@@ -49,21 +49,36 @@ $(function() {
 	    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 	        var place = valueAccessor();
 	        var unwrappedPlace = ko.unwrap(place);
+	        var map = bindingContext.$parent.map;
+
+	        var infoWindow = new google.maps.InfoWindow({
+    			content: unwrappedPlace.name
+  			});
+
 	        var marker = new google.maps.Marker({
 			    position: {lat: unwrappedPlace.location.lat, lng: unwrappedPlace.location.lng},
 			    title: unwrappedPlace.name
 			});
 
+	        marker.addListener('click', function() {
+    			infoWindow.open(map, marker);
+  			});
+
 			$.data(element, "marker", marker);
+			$.data(element, "infoWindow", marker);
 	    },
 	    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 	        var place = valueAccessor();
 	        var unwrappedPlace = ko.unwrap(place);
+	        var map = bindingContext.$parent.map;
+
 	        var marker = $.data(element, "marker");
+	        var infoWindow = $.data(element, "infoWindow");
 	        if(!unwrappedPlace._destroy) {
-	        	marker.setMap(allBindings.get('markerMap'));
+	        	marker.setMap(map);
 	        }
 	        else {
+	        	infoWindow.close();
 	        	marker.setMap(null);
 	        }
 	    }
