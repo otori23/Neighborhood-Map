@@ -203,8 +203,8 @@
     <div class="places-section">
       <h1>YottaCycle</h1>
       <div class="places-list">
-        <ul data-bind="foreach: filteredPlaces">
-        	<li data-bind="drawMarker: $data, click: $parent.placeItemClicked, clickBubble: false">
+        <ul data-bind="foreach: places">
+        	<li data-bind="visible: $data.visible, drawMarker: $data.visible, click: $parent.placeItemClicked, clickBubble: false">
         		<a href="#">
         			<span data-bind="text: name"> </span> 
         		</a>

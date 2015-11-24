@@ -4,9 +4,6 @@ $(function() {
 	    var self = this;
 	    self.searchValue = "";
 	    self.places = ko.observableArray([]);
-	    self.filteredPlaces = ko.computed(function() {
-	        return ko.utils.arrayFilter(self.places(), function(place) { return !place._destroy; });
-	    });
 
 	    // Event Handlers
 	    self.onHamburgerClick = function() {
@@ -24,10 +21,10 @@ $(function() {
         	var re = new RegExp(self.searchValue.trim(), "i");
         	places.forEach(function(place) {
         		if(place.name.match(re)) {
-        			place._destroy = false;
+        			place.visible(true);
         		}
         		else {
-        			place._destroy = true;
+        			place.visible(false);
         		}
         	});
         	self.places(places);
@@ -62,7 +59,10 @@ $(function() {
   			url: "https://api.foursquare.com/v2/venues/search?client_id=XOVHNWG4KKKESGADD0HOE3SWYTXVWYAPWHSQFC4CO4FHE4R5&client_secret=FHXKIUQOFHCJUXQYECAVH3DYE50JEJZ1N1AKONXHHEMWVLZR&v=20130815&ll=37.338141,-121.886366&query=recycle",
 
   			success: function(data, textStatus, jqXHR) {
-  				var venues = $.map(data.response.venues, function(venue) { venue._destroy = false; return venue; });
+  				var venues = $.map(data.response.venues, function(venue) { 
+  					venue.visible = ko.observable(true); 
+  					return venue; 
+  				});
   				venues.sort(function(a, b){ return a.name.localeCompare(b.name); });
   				self.places(venues);
   			},
@@ -76,34 +76,32 @@ $(function() {
 
 	ko.bindingHandlers.drawMarker = {
 	    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-	        var place = valueAccessor();
-	        var unwrappedPlace = ko.unwrap(place);
+	        var place = bindingContext.$data;
 	        var map = bindingContext.$parent.map;
 
 	        var infoWindow = new google.maps.InfoWindow({
-    			content: unwrappedPlace.name
+    			content: place.name
   			});
 
 	        var marker = new google.maps.Marker({
-			    position: {lat: unwrappedPlace.location.lat, lng: unwrappedPlace.location.lng},
-			    title: unwrappedPlace.name
+			    position: {lat: place.location.lat, lng: place.location.lng},
+			    title: place.name
 			});
 
 	        marker.addListener('click', function() {
-    			bindingContext.$parent.placeItemClicked(unwrappedPlace, {currentTarget: element});
+    			bindingContext.$parent.placeItemClicked(place, {currentTarget: element});
   			});
 
 			$.data(element, "marker", marker);
 			$.data(element, "infoWindow", infoWindow);
 	    },
 	    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-	        var place = valueAccessor();
-	        var unwrappedPlace = ko.unwrap(place);
+	        var place = bindingContext.$data;
 	        var map = bindingContext.$parent.map;
 
 	        var marker = $.data(element, "marker");
 	        var infoWindow = $.data(element, "infoWindow");
-	        if(!unwrappedPlace._destroy) {
+	        if(place.visible()) {
 	        	marker.setMap(map);
 	        }
 	        else {
