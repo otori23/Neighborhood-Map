@@ -191,7 +191,7 @@
 		<div class="header-controls">
 			<div class="search-bar" data-bind="click: onSearchBarClick">
 				<span class="icon-search"></span>
-				<input type="text" placeholder="Recycling Options...">
+				<input type="text" data-bind="textInput: searchValue, event: {keyup: onSearchBarKeyUp}", placeholder="Recycling Options...">
 			</div>
 	
 			<div class="hamburger" data-bind="click: onHamburgerClick">

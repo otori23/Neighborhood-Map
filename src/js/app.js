@@ -2,6 +2,7 @@ $(function() {
 	function YottaCycleAppViewModel() {
 		// Data
 	    var self = this;
+	    self.searchValue = "";
 	    self.places = ko.observableArray([]);
 	    self.filteredPlaces = ko.computed(function() {
 	        return ko.utils.arrayFilter(self.places(), function(place) { return !place._destroy; });
@@ -16,6 +17,20 @@ $(function() {
 	    self.onSearchBarClick = function() {
       		var $textBox = $('input[type="text"]');
         	$textBox.focus();
+        };
+
+        self.onSearchBarKeyUp = function () {
+        	var places = self.places();
+        	var re = new RegExp(self.searchValue.trim(), "i");
+        	places.forEach(function(place) {
+        		if(place.name.match(re)) {
+        			place._destroy = false;
+        		}
+        		else {
+        			place._destroy = true;
+        		}
+        	});
+        	self.places(places);
         };
 
         self.placeItemClicked = function(place, event) {
@@ -48,6 +63,7 @@ $(function() {
 
   			success: function(data, textStatus, jqXHR) {
   				var venues = $.map(data.response.venues, function(venue) { venue._destroy = false; return venue; });
+  				venues.sort(function(a, b){ return a.name.localeCompare(b.name); });
   				self.places(venues);
   			},
 
