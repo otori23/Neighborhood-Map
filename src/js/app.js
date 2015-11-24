@@ -36,6 +36,7 @@ $(function() {
 			var infoWindow = $.data(element, "infoWindow");
 
 			if (!infoWindow.getMap()) {
+				if(event.clickedMarker === undefined) self.map.panTo(marker.getPosition());
 				infoWindow.open(self.map, marker);
 			}
 			else {
@@ -89,7 +90,7 @@ $(function() {
 			});
 
 	        marker.addListener('click', function() {
-    			bindingContext.$parent.placeItemClicked(place, {currentTarget: element});
+    			bindingContext.$parent.placeItemClicked(place, {currentTarget: element, clickedMarker: true});
   			});
 
 			$.data(element, "marker", marker);
