@@ -5,10 +5,11 @@ $(function() {
 	    self.searchValue = "";
 	    self.places = ko.observableArray([]);
 	    self.lastSelection = {
+	    	exists: false,
 	    	marker: null,
 	    	infoWindow: null,
 	    	element: null
-	    }
+	    };
 
 	    // Event Handlers
 	    self.onHamburgerClick = function() {
@@ -52,32 +53,35 @@ $(function() {
 				infoWindow.open(self.map, marker);
 				marker.setIcon('img/green-dot.png');
 
-				if(self.lastSelection.marker != null) {
+				if(self.lastSelection.exists) {
 					self.lastSelection.marker.setIcon(null);
-				}
-				if(self.lastSelection.infoWindow != null) {
 					self.lastSelection.infoWindow.close();
-				}
-				if(self.lastSelection.element != null) {
 					$(self.lastSelection.element).css('background-color', '');
 				}
-				self.lastSelection.marker = marker;
-				self.lastSelection.infoWindow = infoWindow;
-				self.lastSelection.element = element;
+				self.setLastSelection(marker, infoWindow, element);
 			}
 			else {
-				self.clearMarker(marker, infoWindow);
+				self.clearLastSelection();
 			}
         };
 
-        self.clearMarker = function(marker, infoWindow) {
-        	infoWindow.close();
-        	marker.setIcon(null);
+        self.clearLastSelection = function() {
+        	self.lastSelection.infoWindow.close(); 
+			self.lastSelection.marker.setIcon(null); 
+			$(self.lastSelection.element).css('background-color', '');
+
+			self.lastSelection.exists = false;
 			self.lastSelection.marker = null;
 			self.lastSelection.infoWindow = null;
-			$(self.lastSelection.element).css('background-color', '');
 			self.lastSelection.element = null;
-        }
+        };
+
+        self.setLastSelection = function(marker, infoWindow, element) {
+        	self.lastSelection.exists = true;
+			self.lastSelection.marker = marker;
+			self.lastSelection.infoWindow = infoWindow;
+			self.lastSelection.element = element;
+        };
 
         // Operations
 
@@ -125,7 +129,7 @@ $(function() {
 			});
 
 	        infoWindow.addListener('closeclick',function(){
-				bindingContext.$parent.clearMarker(marker, infoWindow);
+				bindingContext.$parent.clearLastSelection();
 			});
 
 	        marker.addListener('click', function() {
@@ -145,7 +149,9 @@ $(function() {
 	        	marker.setMap(map);
 	        }
 	        else {
-	        	bindingContext.$parent.clearMarker(marker, infoWindow);
+	        	if(marker === bindingContext.$parent.lastSelection.marker) {
+	        		bindingContext.$parent.clearLastSelection();
+	        	}
 	        	marker.setMap(null);
 	        }
 	    }
