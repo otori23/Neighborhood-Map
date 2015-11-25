@@ -6,6 +6,7 @@ $(function() {
 	    self.places = ko.observableArray([]);
 	    self.lastOpenedMarker = null;
 	    self.lastOpenedInfoWindow = null;
+	    self.lastSelectedElement = null;
 
 	    // Event Handlers
 	    self.onHamburgerClick = function() {
@@ -38,7 +39,14 @@ $(function() {
 			var infoWindow = $.data(element, "infoWindow");
 
 			if (!infoWindow.getMap()) {
-				if(event.clickedMarker === undefined) self.map.panTo(marker.getPosition());
+				
+				if(event.clickedMarker === true) { // clicked on marker
+					element.scrollIntoView();
+				}
+				else { // clicked on list view item
+					self.map.panTo(marker.getPosition());
+				}
+				$(element).css('background-color', '#00FF72');	
 				infoWindow.open(self.map, marker);
 				marker.setIcon('img/green-dot.png');
 
@@ -48,8 +56,12 @@ $(function() {
 				if(self.lastOpenedInfoWindow != null) {
 					self.lastOpenedInfoWindow.close();
 				}
+				if(self.lastSelectedElement != null) {
+					$(self.lastSelectedElement).css('background-color', '');
+				}
 				self.lastOpenedMarker = marker;
 				self.lastOpenedInfoWindow = infoWindow;
+				self.lastSelectedElement = element;
 			}
 			else {
 				self.clearMarker(marker, infoWindow);
@@ -61,6 +73,8 @@ $(function() {
         	marker.setIcon(null);
 			self.lastOpenedMarker = null;
 			self.lastOpenedInfoWindow = null;
+			$(self.lastSelectedElement).css('background-color', '');
+			self.lastSelectedElement = null;
         }
 
         // Operations
