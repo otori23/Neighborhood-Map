@@ -38,9 +38,11 @@ $(function() {
 			if (!infoWindow.getMap()) {
 				if(event.clickedMarker === undefined) self.map.panTo(marker.getPosition());
 				infoWindow.open(self.map, marker);
+				marker.setIcon('img/green-dot.png');
 			}
 			else {
 				infoWindow.close();
+				marker.setIcon(null);
 			}
         };
 
@@ -87,6 +89,10 @@ $(function() {
 	        var marker = new google.maps.Marker({
 			    position: {lat: place.location.lat, lng: place.location.lng},
 			    title: place.name
+			});
+
+	        infoWindow.addListener('closeclick',function(){
+	        	marker.setIcon(null);
 			});
 
 	        marker.addListener('click', function() {
