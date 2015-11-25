@@ -4,6 +4,8 @@ $(function() {
 	    var self = this;
 	    self.searchValue = "";
 	    self.places = ko.observableArray([]);
+	    self.lastOpenedMarker = null;
+	    self.lastOpenedInfoWindow = null;
 
 	    // Event Handlers
 	    self.onHamburgerClick = function() {
@@ -39,12 +41,27 @@ $(function() {
 				if(event.clickedMarker === undefined) self.map.panTo(marker.getPosition());
 				infoWindow.open(self.map, marker);
 				marker.setIcon('img/green-dot.png');
+
+				if(self.lastOpenedMarker != null) {
+					self.lastOpenedMarker.setIcon(null);
+				}
+				if(self.lastOpenedInfoWindow != null) {
+					self.lastOpenedInfoWindow.close();
+				}
+				self.lastOpenedMarker = marker;
+				self.lastOpenedInfoWindow = infoWindow;
 			}
 			else {
-				infoWindow.close();
-				marker.setIcon(null);
+				self.clearMarker(marker, infoWindow);
 			}
         };
+
+        self.clearMarker = function(marker, infoWindow) {
+        	infoWindow.close();
+        	marker.setIcon(null);
+			self.lastOpenedMarker = null;
+			self.lastOpenedInfoWindow = null;
+        }
 
         // Operations
 
@@ -92,7 +109,7 @@ $(function() {
 			});
 
 	        infoWindow.addListener('closeclick',function(){
-	        	marker.setIcon(null);
+				bindingContext.$parent.clearMarker(marker, infoWindow);
 			});
 
 	        marker.addListener('click', function() {
@@ -112,7 +129,7 @@ $(function() {
 	        	marker.setMap(map);
 	        }
 	        else {
-	        	infoWindow.close();
+	        	bindingContext.$parent.clearMarker(marker, infoWindow);
 	        	marker.setMap(null);
 	        }
 	    }
