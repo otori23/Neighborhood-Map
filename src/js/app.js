@@ -4,9 +4,11 @@ $(function() {
 	    var self = this;
 	    self.searchValue = "";
 	    self.places = ko.observableArray([]);
-	    self.lastOpenedMarker = null;
-	    self.lastOpenedInfoWindow = null;
-	    self.lastSelectedElement = null;
+	    self.lastSelection = {
+	    	marker: null,
+	    	infoWindow: null,
+	    	element: null
+	    }
 
 	    // Event Handlers
 	    self.onHamburgerClick = function() {
@@ -50,18 +52,18 @@ $(function() {
 				infoWindow.open(self.map, marker);
 				marker.setIcon('img/green-dot.png');
 
-				if(self.lastOpenedMarker != null) {
-					self.lastOpenedMarker.setIcon(null);
+				if(self.lastSelection.marker != null) {
+					self.lastSelection.marker.setIcon(null);
 				}
-				if(self.lastOpenedInfoWindow != null) {
-					self.lastOpenedInfoWindow.close();
+				if(self.lastSelection.infoWindow != null) {
+					self.lastSelection.infoWindow.close();
 				}
-				if(self.lastSelectedElement != null) {
-					$(self.lastSelectedElement).css('background-color', '');
+				if(self.lastSelection.element != null) {
+					$(self.lastSelection.element).css('background-color', '');
 				}
-				self.lastOpenedMarker = marker;
-				self.lastOpenedInfoWindow = infoWindow;
-				self.lastSelectedElement = element;
+				self.lastSelection.marker = marker;
+				self.lastSelection.infoWindow = infoWindow;
+				self.lastSelection.element = element;
 			}
 			else {
 				self.clearMarker(marker, infoWindow);
@@ -71,10 +73,10 @@ $(function() {
         self.clearMarker = function(marker, infoWindow) {
         	infoWindow.close();
         	marker.setIcon(null);
-			self.lastOpenedMarker = null;
-			self.lastOpenedInfoWindow = null;
-			$(self.lastSelectedElement).css('background-color', '');
-			self.lastSelectedElement = null;
+			self.lastSelection.marker = null;
+			self.lastSelection.infoWindow = null;
+			$(self.lastSelection.element).css('background-color', '');
+			self.lastSelection.element = null;
         }
 
         // Operations
