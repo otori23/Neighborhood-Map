@@ -83,6 +83,10 @@ $(function() {
 			self.lastSelection.element = element;
         };
 
+        self.getInfoWindowDivId = function(id) {
+        	return 'y'+id;
+        };
+
         // Operations
 
         // Draw Map
@@ -118,9 +122,10 @@ $(function() {
 	    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 	        var place = bindingContext.$data;
 	        var map = bindingContext.$parent.map;
+	        var content = $("#y" + place.id).html();
 
 	        var infoWindow = new google.maps.InfoWindow({
-    			content: place.name
+    			content: content 
   			});
 
 	        var marker = new google.maps.Marker({

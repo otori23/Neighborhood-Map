@@ -31,10 +31,14 @@
     <h1>YottaCycle</h1>
     <div class="places-list">
       <ul data-bind="foreach: places">
-      	<li data-bind="visible: $data.visible, drawMarker: $data.visible, click: $parent.placeItemClicked, clickBubble: false">
-      		<a href="#">
-      			<span data-bind="text: name"> </span> 
-      		</a>
+        <div class="info-window-template" data-bind="attr: { id: $parent.getInfoWindowDivId($data.id) }">
+          <p><strong><span data-bind="text: $data.name"></span></strong></p>
+          <p><span data-bind="text: $data.location.address"></span></p>
+          <p><span data-bind="text: $data.location.city + ', ' + $data.location.state + ' ' + $data.location.country"></span></p>
+          <p><span data-bind="text: $data.contact.formattedPhone"></span></p>
+        </div>
+        <li data-bind="visible: $data.visible, drawMarker: $data.visible, click: $parent.placeItemClicked, clickBubble: false">
+      		<a href="#"><span data-bind="text: name"></span></a>
       	</li>
       </ul>
     </div>      
