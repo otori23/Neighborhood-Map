@@ -71,7 +71,6 @@ header .search-bar {
 
 header .search-bar:hover {
 	box-shadow: 0 0 10px black;
-	-webkit-box-shadow: 0 0 10px black;
 }
 
 header .icon-search {
@@ -107,13 +106,29 @@ header .hamburger:hover {
 	border-radius: 5px;
 
 	position: relative; /* means nav will cover exisiting content when it comes into view */
-	transform: translate(-305px, 0); /* use translate to move it off the screen */
-	transition: transform 0.5s ease; /* add tranisiton of .5 secs for nice animation */
 
+	/* use translate to move it off the screen */
+	-webkit-transform: translate(-305px, 0);
+	-moz-transform: translate(-305px, 0);
+	-o-transform: translate(-305px, 0);
+	-ms-transform: translate(-305px, 0);
+	transform: translate(-305px, 0);
+
+	/* add tranisiton of .5 secs for nice animation */
+	-webkit-transition: transform 0.5s ease;
+	-moz-transition: transform 0.5s ease;
+	-o-transition: transform 0.5s ease;
+	-ms-transition: transform 0.5s ease; 
+	transition: transform 0.5s ease; 
+	
 	box-shadow: 0 0 10px black;
 }
 
 .places-section.open-places-section {
+	-webkit-transform: translate(0, 0);
+  	-moz-transform: translate(0, 0);
+  	-o-transform: translate(0, 0);
+  	-ms-transform: translate(0, 0);
 	transform: translate(0, 0);
 	border-right: none;
 }
@@ -135,7 +150,7 @@ header .hamburger:hover {
 	font-size: 2em; 
 	list-style-type: none;
 	padding-left: 0;
-	}
+}
 
 .places-section li {
 	border-bottom: 1px solid black;
@@ -193,6 +208,10 @@ header .hamburger:hover {
   }
 
   .places-section {
+  	-webkit-transform: translate(0, 0);
+  	-moz-transform: translate(0, 0);
+  	-o-transform: translate(0, 0);
+  	-ms-transform: translate(0, 0);
     transform: translate(0, 0);
     border-right: none;
   }
