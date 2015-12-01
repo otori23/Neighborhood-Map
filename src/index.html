@@ -15,7 +15,7 @@
 <body>
 	<div id="map"></div>
 	<header>
-		<h1>YottaCycle - Recycling Locator</h1>
+		<h1>YottaCycle - <a href="#openModal" title="Open" class="open">San Jose, CA</a></h1>
 	
 		<div class="header-controls">
 			<div class="search-bar" data-bind="click: onSearchBarClick">
@@ -47,6 +47,15 @@
   </div>
 
   <img class="foursquare-attribution" alt="foursquare attribution" src="img/foursquare.png">
+  
+  <div id="openModal" class="modalDialog" data-bind="click: closeModalDialog, clickBubble: false">
+    <div>
+      <a href="#close" title="Close" class="close" data-bind="clickBubble: false">X</a>
+      <h2>Modal Box</h2>
+      <p>This is a sample modal box that can be created using the powers of CSS3.</p>
+      <p>You could do a lot of things here like have a pop-up ad that shows when your website loads, or create a login/register form for users.</p>
+    </div>
+  </div>
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPw0yXOiBKXu1E7fDxNjg6BD0ANIXiSv0&libraries=places"></script>
   <script src='js/jquery-1.11.3.min.js'></script>

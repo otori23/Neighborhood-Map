@@ -87,6 +87,14 @@ $(function() {
         	return 'y'+id;
         };
 
+        self.closeModalDialog = function(viewModel, event) {
+        	var modal = document.querySelector('.modalDialog');
+	        if(event.target === modal) {
+          		document.querySelector('.close').click();
+        	}
+        	return true; // allow default action 	
+        };
+
         // Operations
 
         // Draw Map
@@ -116,6 +124,9 @@ $(function() {
   				alert("Error Loading Recycling Data");
   			}
 		});
+
+		// Show Modal Dialog
+		document.querySelector('.open').click();
 	}
 
 	ko.bindingHandlers.drawMarker = {
