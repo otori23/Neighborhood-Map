@@ -192,7 +192,7 @@ header .hamburger:hover {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background: rgba(0,0,0,0.8);
+	background: rgba(0,255,114,0.9);
 	z-index: 99999;
 	opacity: 0;
 	-webkit-transition: opacity 400ms ease-in;
@@ -206,39 +206,55 @@ header .hamburger:hover {
 	pointer-events: auto;
 }
 
-.modalDialog > div {
-	width: 400px;
+.modalDialog .searchContent {
+	width: 95%;
 	position: relative;
-	margin: 10% auto;
-	padding: 5px 20px 13px 20px;
-	border-radius: 10px;
-	background: #FFFFFF;
-	background: -moz-linear-gradient(#FFFFFF, #999999);
-	background: -webkit-linear-gradient(#FFFFFF, #999999);
-	background: -o-linear-gradient(#FFFFFF, #999999);
+	margin: 20% auto;
+	color: rgb(255, 255, 255);
+	text-align: center;
+	font-weight: bold;
 }
 
-.close {
-	background: #606061;
-	color: #FFFFFF;
-	line-height: 25px;
-	position: absolute;
-	right: -12px;
-	text-align: center;
-	top: -10px;
-	width: 24px;
+.searchContent h1 {
+	font-size: 5em;
+}
+
+.searchContent p {
+	font-size: 2.5em;
+}
+
+.searchContent a {
 	text-decoration: none;
-	font-weight: bold;
-	-webkit-border-radius: 12px;
-	-moz-border-radius: 12px;
-	border-radius: 12px;
+	display: inline-block;
+	padding: 7.5px 10px;
+	color: #FFFFFF;
+	background: #2D5BE3;
+	border-radius: 5px;
+	font-size: 1.2em;
+	margin-left: 10px;
 	-moz-box-shadow: 1px 1px 3px #000000;
 	-webkit-box-shadow: 1px 1px 3px #000000;
 	box-shadow: 1px 1px 3px #000000;
 }
 
-.close:hover { 
-	background: #00FF72; 
+.searchContent a:hover {
+	background: #2D1BB3;
+}
+
+.searchContent .close {
+	position: fixed;
+	top: 5px;
+	right: 5px;
+}
+
+.searchContent input[type="text"] {
+	font-size: 2em;
+	margin-bottom: 10px;
+	vertical-align: top;
+}
+
+.searchContent .inputs {
+	margin-top: 10px;
 }
 
 @media screen and (min-width: 450px) {
@@ -248,6 +264,25 @@ header .hamburger:hover {
   }
 }
 
+@media screen and (min-width: 650px) {
+  .searchContent h1 {
+	font-size: 10em;
+  }
+
+  .searchContent p {
+  	font-size: 5em;
+  }
+
+  .searchContent a {
+  	padding: 15px 20px;
+  	font-size: 1.8em;
+  }
+
+  .searchContent input[type="text"] {
+  	font-size: 4em;
+  }
+}
+ 
 @media screen and (min-width: 950px){
   header h1 {
     display: inline-block;
