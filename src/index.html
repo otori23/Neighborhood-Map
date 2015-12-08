@@ -20,7 +20,7 @@
 		<div class="header-controls">
 			<div class="search-bar" data-bind="click: onSearchBarClick">
 				<span class="icon-search"></span>
-				<input type="text" data-bind="textInput: searchValue, event: {keyup: onSearchBarKeyUp}", placeholder="Recycling Options...">
+				<input type="text" class="filterInput" data-bind="textInput: searchValue, event: {keyup: onSearchBarKeyUp}", placeholder="Recycling Options...">
 			</div>
 	
 			<div class="hamburger" data-bind="click: onHamburgerClick">
@@ -51,14 +51,14 @@
   <div id="openModal" class="modalDialog">  
     <div class="searchContent">
       <a href="#closeModal" title="Close" class="close" data-bind="visible: true, clickBubble: false">X</a>
-      <h1 class="largeLogo">YottaCycle</h1>
-      <p class="tagline">Find a recylce facility near you.</p>
+      <h1>YottaCycle</h1>
+      <p>Find a recylce facility near you.</p>
       <div class="inputs">
         <input type="text" placeholder="Enter Place..."><a href="#"><span class="icon-search"></span> Search</a>
       </div>
     </div>
   </div>
-
+  
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPw0yXOiBKXu1E7fDxNjg6BD0ANIXiSv0&libraries=places"></script>
   <script src='js/jquery-1.11.3.min.js'></script>
   <script src='js/knockout-3.4.0.js'></script>

@@ -18,7 +18,7 @@ $(function() {
 	    };
 
 	    self.onSearchBarClick = function() {
-      		var $textBox = $('input[type="text"]');
+      		var $textBox = $('input[type="text"].filterInput');
         	$textBox.focus();
         };
 
