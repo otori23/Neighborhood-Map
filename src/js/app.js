@@ -87,6 +87,11 @@ $(function() {
         	return 'y'+id;
         };
 
+        self.searchForLocation = function(model, event){
+        	event.preventDefault();
+        	// geonames request here
+        }
+
         // Operations
 
         // Draw Map
