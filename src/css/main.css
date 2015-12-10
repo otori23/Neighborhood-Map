@@ -67,7 +67,6 @@ header .search-bar {
 	padding: 2px;
 	border-radius: 10px;
 	font-size: 0.65em;
-	line-height: 1;
 }
 
 header .search-bar:hover {
