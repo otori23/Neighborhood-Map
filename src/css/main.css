@@ -196,6 +196,7 @@ header .hamburger:hover {
 	-moz-transition: opacity 400ms ease-in;
 	transition: opacity 400ms ease-in;
 	pointer-events: none;
+	overflow-y: auto;
 }
 
 .modalDialog:target {
@@ -206,7 +207,7 @@ header .hamburger:hover {
 .modalDialog .searchContent {
 	width: 95%;
 	position: relative;
-	margin: 20% auto;
+	margin: 5% auto;
 	color: rgb(255, 255, 255);
 	text-align: center;
 	font-weight: bold;
@@ -322,5 +323,14 @@ header .hamburger:hover {
 
   .places-section h1 {
     display: none;
+  }
+}
+
+@media screen and (min-height: 450px) {
+  .modalDialog {
+  	overflow-y: initial;
+  }
+  .modalDialog .searchContent {
+	margin: 20% auto;
   }
 }
