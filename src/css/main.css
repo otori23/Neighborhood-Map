@@ -244,14 +244,17 @@ header .hamburger:hover {
 	right: 5px;
 }
 
-.searchContent input[type="text"] {
-	font-size: 2em;
-	margin-bottom: 10px;
-	vertical-align: top;
-}
-
 .searchContent .inputs {
 	margin-top: 10px;
+}
+
+.searchContent .inputs input[type="text"] {
+	font-size: 1.5em;
+	vertical-align: middle;
+}
+
+.searchContent .inputs a {
+	vertical-align: middle;
 }
 
 @media screen and (min-width: 400px) {
@@ -284,7 +287,7 @@ header .hamburger:hover {
   	font-size: 1.8em;
   }
 
-  .searchContent input[type="text"] {
+  .searchContent .inputs input[type="text"] {
   	font-size: 4em;
   }
 }
