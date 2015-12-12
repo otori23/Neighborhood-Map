@@ -4,6 +4,7 @@ $(function() {
 	    var self = this;
 	    self.neighborhoodLat = ko.observable(0);
 	    self.neighborhoodLng = ko.observable(0);
+	    self.hideSpinner = ko.observable(true);
 	    self.searchValue = "";
 	    self.places = ko.observableArray([]);
 	    self.lastSelection = {
@@ -173,6 +174,17 @@ $(function() {
 	        	marker.setMap(null);
 	        }
 	    }
+	};
+
+	ko.bindingHandlers.hidden = {
+		update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+			if(ko.unwrap(valueAccessor())){
+				element.style.visibility = 'hidden';
+			}
+			else{
+				element.style.visibility = 'initial';
+			}
+		}
 	};
 
 	ko.applyBindings(new YottaCycleAppViewModel());
