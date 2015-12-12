@@ -2,7 +2,8 @@ $(function() {
 	function YottaCycleAppViewModel() {
 		// Data
 	    var self = this;
-	    self.hood = {};
+	    self.neighborhoodLat = ko.observable(0);
+	    self.neighborhoodLng = ko.observable(0);
 	    self.searchValue = "";
 	    self.places = ko.observableArray([]);
 	    self.lastSelection = {
@@ -12,7 +13,7 @@ $(function() {
 	    	element: null
 	    };
 	    self.hoodDefined = ko.computed(function() {
-        	return (this.hood.lat !== undefined && this.hood.lng !== undefined);
+        	return (this.neighborhoodLat() !== 0 && this.neighborhoodLng() !== 0);
     	}, self);
 
 	    // Event Handlers
