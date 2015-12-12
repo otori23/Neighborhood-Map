@@ -222,10 +222,10 @@ header .hamburger:hover {
 }
 
 .searchContent .spinner {
-	width: 150px;
-	height: 150px;
+	width: 70px;
+	height: 70px;
 	-webkit-animation: sweep 1s infinite linear;
-	border-radius:75px;
+	border-radius:35px;
 	border-bottom:5px solid #2D5BE3;
 	display: inline-block;
 }
@@ -337,14 +337,5 @@ header .hamburger:hover {
 
   .places-section h1 {
     display: none;
-  }
-}
-
-@media screen and (min-height: 450px) {
-  .modalDialog {
-  	overflow-y: initial;
-  }
-  .modalDialog .searchContent {
-	margin: 20% auto;
   }
 }
