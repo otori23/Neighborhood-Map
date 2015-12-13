@@ -4,7 +4,15 @@ $(function() {
 	    var self = this;
 	    self.neighborhoodLat = ko.observable(0);
 	    self.neighborhoodLng = ko.observable(0);
+	    self.hoodOptions = ko.observableArray([]);
+	    self.selectedHood = ko.observable();
+	    self.hoodDefined = ko.computed(function() {
+        	return (this.neighborhoodLat() !== 0 && this.neighborhoodLng() !== 0);
+    	}, self);
 	    self.hideSpinner = ko.observable(true);
+	    self.hideHoodOptions = ko.computed(function() {
+	    	return this.hoodOptions().length === 0;
+	    }, self);
 	    self.searchValue = "";
 	    self.places = ko.observableArray([]);
 	    self.lastSelection = {
@@ -13,9 +21,7 @@ $(function() {
 	    	infoWindow: null,
 	    	element: null
 	    };
-	    self.hoodDefined = ko.computed(function() {
-        	return (this.neighborhoodLat() !== 0 && this.neighborhoodLng() !== 0);
-    	}, self);
+	    
 
 	    // Event Handlers
 	    self.onHamburgerClick = function() {
