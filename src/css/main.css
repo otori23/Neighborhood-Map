@@ -263,13 +263,28 @@ header .hamburger:hover {
 	margin-top: 10px;
 }
 
-.searchContent .inputs input[type="text"] {
-	font-size: 1.5em;
-	vertical-align: middle;
+.searchContent .inputs a {
+	vertical-align: top;
 }
 
-.searchContent .inputs a {
-	vertical-align: middle;
+.searchContent .auto-complete-widget {
+	display: inline-block;
+	font-size: 1.5em;
+	vertical-align: top;
+	width: 180px;
+}
+
+.auto-complete-widget input[type="text"] {
+	display: block;
+	font-size: inherit;
+	padding: 4px 0;
+}
+
+.auto-complete-widget select {
+	display: block;
+    overflow-y: auto;
+    overflow-x: visible;
+    font-size: inherit;
 }
 
 @media screen and (min-width: 400px) {
@@ -302,9 +317,14 @@ header .hamburger:hover {
   	font-size: 1.8em;
   }
 
-  .searchContent .inputs input[type="text"] {
+  .searchContent .auto-complete-widget {
   	font-size: 4em;
+  	width: 455px;
   }
+  .auto-complete-widget input[type="text"] {
+	padding: 1px 0;
+  }
+
 }
  
 @media screen and (min-width: 950px){
