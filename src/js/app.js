@@ -4,6 +4,7 @@ $(function() {
 		var self = this;
 
 		// default neighborhood = San Jose, CA, US
+		self.currentNeighborhood = ko.observable("");
 	    self.neighborhoodLat = ko.observable(37.4);
 	    self.neighborhoodLng = ko.observable(-121.9);
 
@@ -216,8 +217,9 @@ $(function() {
   					});
   					venues.sort(function(a, b){ return a.name.localeCompare(b.name); });
   					self.places(venues);
+  					self.currentNeighborhood(self.hoodSearchTerm());
+  					self.searchValue(""); 
     				self.closeModalWindow();
-    				self.searchValue("");
   				},
 
   				error: function(jqXHR, textStatus, errorThrown) {
@@ -231,6 +233,7 @@ $(function() {
         };
 
         self.closeModalWindow = function() {
+        	self.hoodSearchTerm("");
         	document.querySelector('.close').click();
         }; 
 
