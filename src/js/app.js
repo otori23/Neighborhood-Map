@@ -8,7 +8,7 @@ $(function() {
 	    self.neighborhoodLng = ko.observable(-121.9);
 
 		// Data: Main Page
-		self.searchValue = "";
+		self.searchValue = ko.observable("");
 	    self.places = ko.observableArray([]);
 	    self.lastSelection = {
 	    	exists: false,
@@ -52,7 +52,7 @@ $(function() {
 
         self.onSearchBarKeyUp = function () {
         	var places = self.places();
-        	var re = new RegExp(self.searchValue.trim(), "i");
+        	var re = new RegExp(self.searchValue().trim(), "i");
         	places.forEach(function(place) {
         		if(place.name.match(re)) {
         			place.visible(true);
@@ -217,6 +217,7 @@ $(function() {
   					venues.sort(function(a, b){ return a.name.localeCompare(b.name); });
   					self.places(venues);
     				self.closeModalWindow();
+    				self.searchValue("");
   				},
 
   				error: function(jqXHR, textStatus, errorThrown) {
