@@ -56,8 +56,13 @@
       <p>Find a recylce facility near you.</p>
       <div class="inputs">
         <div class="auto-complete-widget">
-          <input type="text" placeholder="Enter Place...">
-          <select size="3" data-bind="options: hoodOptions, value: selectedHood, hidden: hideHoodOptions">
+          <input type="text" placeholder="Enter Place..." data-bind="textInput: hoodSearchTerm, 
+                                                                    event: {keyup: onNeighborhoodSearchKeyUp}">
+          <select size="3" data-bind="options: hoodOptions,
+                                      optionsText: 'displayName', 
+                                      value: selectedHood, 
+                                      hidden: hideHoodOptions
+                                      ">
           </select>
         </div>
         <a href="#" data-bind="click: searchForLocation, clickBubble: false"><span class="icon-search"></span> Search</a>

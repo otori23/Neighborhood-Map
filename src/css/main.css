@@ -256,7 +256,7 @@ header .hamburger:hover {
 .searchContent .close {
 	position: fixed;
 	top: 5px;
-	right: 5px;
+	right: 25px;
 }
 
 .searchContent .inputs {

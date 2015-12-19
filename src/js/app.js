@@ -5,11 +5,28 @@ $(function() {
 	    self.neighborhoodLat = ko.observable(0);
 	    self.neighborhoodLng = ko.observable(0);
 	    self.hoodOptions = ko.observableArray([]);
+	    
 	    self.selectedHood = ko.observable();
+	    
+	    self.selectedHood.subscribe(function (geoname) {
+	    	if(geoname !== undefined){
+	    		self.hoodSearchTerm(geoname.displayName);
+	    		self.neighborhoodLat(geoname.lat);
+	    		self.neighborhoodLng(geoname.lng);
+	    		self.hoodOptions.removeAll();
+	    	}	
+    	});
+
+
 	    self.hoodDefined = ko.computed(function() {
         	return (this.neighborhoodLat() !== 0 && this.neighborhoodLng() !== 0);
     	}, self);
 	    self.hideSpinner = ko.observable(true);
+	    self.hoodSearchTerm = ko.observable("")
+	    						.extend({ 
+	    							rateLimit: { method: "notifyWhenChangesStop", timeout: 500 } 
+	    						});
+	    self.minSearchTermLength = 3;
 	    self.hideHoodOptions = ko.computed(function() {
 	    	return this.hoodOptions().length === 0;
 	    }, self);
@@ -99,10 +116,50 @@ $(function() {
         	return 'y'+id;
         };
 
+        self.onNeighborhoodSearchKeyUp = function() {
+        	if(self.hoodSearchTerm().length < self.minSearchTermLength) {
+        		self.hoodOptions.removeAll();
+        		return;
+        	}
+
+        	$.ajax({
+            	url: "http://api.geonames.org/searchJSON",
+            	
+            	data: {
+            		userName: "otori23",
+            		name_startsWith: self.hoodSearchTerm,
+            		featureClass: "P",
+            		style: "medium",
+            		maxRows: 3,
+            		countryBias: "US"
+            	},
+
+            	beforeSend: function() {
+            		self.hideSpinner(false);
+            	},
+
+            	success: function(data) {
+  					var geonames = $.map(data.geonames, function(geoname) { 
+  						geoname.displayName = geoname.name + ', ' + geoname.adminCode1 + ', ' + geoname.countryName;
+  						return geoname; 
+  					});
+  					self.hoodOptions(geonames);
+            	},
+            	
+            	error: function (xhr, textStatus, errorThrown) {
+              		alert("Ooops, geonames server returned: textStatus= " + textStatus + " Error= " + errorThrown);
+            	},
+
+            	complete: function() {
+            		self.hideSpinner(true);
+            	}
+        	});
+        };
+
         self.searchForLocation = function(model, event){
         	event.preventDefault();
         	// geonames request here
-        }
+        };
 
         // Operations
 
@@ -130,7 +187,7 @@ $(function() {
 
   			error: function(jqXHR, textStatus, errorThrown) {
   				// Do something sensible here
-  				alert("Error Loading Recycling Data");
+  				alert("Ooops, foursquare returned: textStatus=" + textStatus + " Error= " + errorThrown);
   			}
 		});
 
