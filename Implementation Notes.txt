@@ -198,4 +198,68 @@ After generating a favicon with this tool download and save to the root director
 
 This one seems to support transparency in the ico file
 The generator from (3) does not seem to support transparency
+
+December 16th 2015
+
+1) www.geonames.org
+
+username: <<last>><<soccer>>
+email: google
+password: social
+
+2) Test api.geonames.org/search
+
+- XML response
+api.geonames.org/search
+
+- JSON response
+api.geonames.org/searchJSON
+api.geonames.org/search?type=json
+
+- sample request
+http://api.geonames.org/searchJSON?userName=otori23&lang=en&featureClass=P&style=full&maxRows=1&name_startsWith=san&_=1450305380567&countryBias=US&formatted=true
+
+- will use the following request in app
+http://api.geonames.org/searchJSON?userName=otori23&name_startsWith=san&featureClass=P&style=medium&maxRows=3&countryBias=US
+
+- response
+{
+  "totalResultsCount": 77760,
+  "geonames": [{
+    "countryId": "6252001",
+    "adminCode1": "CA",
+    "countryName": "United States",
+    "fclName": "city, village,...",
+    "countryCode": "US",
+    "lng": "-117.15726",
+    "fcodeName": "seat of a second-order administrative division",
+    "toponymName": "San Diego",
+    "fcl": "P",
+    "name": "San Diego",
+    "fcode": "PPLA2",
+    "geonameId": 5391811,
+    "lat": "32.71533",
+    "adminName1": "California",
+    "population": 1307402
+  }]
+}
+
+- On selection, pull out
+response.geonames[#].toponymName = San Diego
+-or-
+response.geonames[#].name = San Diego
+
+response.geonames[#].adminCode1 = CA
+
+response.geonames[#].countryCode = US
+-or-
+(response.geonames[#].countryName = United States)
+
+response.geonames[#].lng = "###"
+response.geonames[#].lat = "###"
+
+
+ 
+
+
  
