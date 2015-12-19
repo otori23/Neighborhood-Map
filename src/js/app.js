@@ -1,13 +1,25 @@
 $(function() {	
 	function YottaCycleAppViewModel() {
 		// Data
-	    var self = this;
-	    self.neighborhoodLat = ko.observable(0);
-	    self.neighborhoodLng = ko.observable(0);
+		var self = this;
+
+		// default neighborhood = San Jose, CA, US
+	    self.neighborhoodLat = ko.observable(37.4);
+	    self.neighborhoodLng = ko.observable(-121.9);
+
+		// Data: Main Page
+		self.searchValue = "";
+	    self.places = ko.observableArray([]);
+	    self.lastSelection = {
+	    	exists: false,
+	    	marker: null,
+	    	infoWindow: null,
+	    	element: null
+	    };
+
+		// Data: Modal Page
 	    self.hoodOptions = ko.observableArray([]);
-	    
 	    self.selectedHood = ko.observable();
-	    
 	    self.selectedHood.subscribe(function (geoname) {
 	    	if(geoname !== undefined){
 	    		self.hoodSearchTerm(geoname.displayName);
@@ -16,12 +28,8 @@ $(function() {
 	    		self.hoodOptions.removeAll();
 	    	}	
     	});
-
-
-	    self.hoodDefined = ko.computed(function() {
-        	return (this.neighborhoodLat() !== 0 && this.neighborhoodLng() !== 0);
-    	}, self);
-	    self.hideSpinner = ko.observable(true);
+	    self.hideModalCloseBtn = ko.observable(true);
+	    self.hideModalSpinner = ko.observable(true);
 	    self.hoodSearchTerm = ko.observable("")
 	    						.extend({ 
 	    							rateLimit: { method: "notifyWhenChangesStop", timeout: 500 } 
@@ -30,16 +38,7 @@ $(function() {
 	    self.hideHoodOptions = ko.computed(function() {
 	    	return this.hoodOptions().length === 0;
 	    }, self);
-	    self.searchValue = "";
-	    self.places = ko.observableArray([]);
-	    self.lastSelection = {
-	    	exists: false,
-	    	marker: null,
-	    	infoWindow: null,
-	    	element: null
-	    };
 	    
-
 	    // Event Handlers
 	    self.onHamburgerClick = function() {
       		var $placesSection = $(".places-section");
@@ -117,11 +116,6 @@ $(function() {
         };
 
         self.onNeighborhoodSearchKeyUp = function() {
-        	if(self.hoodSearchTerm().length < self.minSearchTermLength) {
-        		self.hoodOptions.removeAll();
-        		return;
-        	}
-
         	$.ajax({
             	url: "http://api.geonames.org/searchJSON",
             	
@@ -135,12 +129,16 @@ $(function() {
             	},
 
             	beforeSend: function() {
-            		self.hideSpinner(false);
+            		if(self.hoodSearchTerm().length < self.minSearchTermLength) {
+        				self.hoodOptions.removeAll();
+        				return false;
+        			}
+            		self.hideModalSpinner(false);
             	},
 
             	success: function(data) {
   					var geonames = $.map(data.geonames, function(geoname) { 
-  						geoname.displayName = geoname.name + ', ' + geoname.adminCode1 + ', ' + geoname.countryName;
+  						geoname.displayName = geoname.name + ', ' + geoname.adminCode1 + ', ' + geoname.countryCode;
   						return geoname; 
   					});
   					self.hoodOptions(geonames);
@@ -151,27 +149,108 @@ $(function() {
             	},
 
             	complete: function() {
-            		self.hideSpinner(true);
+            		self.hideModalSpinner(true);
             	}
         	});
         };
 
-        self.searchForLocation = function(model, event){
-        	event.preventDefault();
-        	// geonames request here
+        self.searchForNeighborhood = function(model, event){
+        	$.ajax({
+            	url: "https://maps.googleapis.com/maps/api/js",
+            	
+            	dataType: "jsonp", 
+
+            	data: {
+            		key: "AIzaSyDPw0yXOiBKXu1E7fDxNjg6BD0ANIXiSv0"
+            	},
+
+            	beforeSend: function() {
+            		if(self.map !== undefined) {
+        				self.hood = new google.maps.LatLng(self.neighborhoodLat(), self.neighborhoodLng());
+						self.map.setCenter(self.hood);
+						self.loadRecyclingData();
+        				return false;
+        			}
+            		self.hideModalSpinner(false);
+            	},
+
+            	success: function(data) {
+        			self.hood = new google.maps.LatLng(self.neighborhoodLat(), self.neighborhoodLng());
+    				self.map = new google.maps.Map(document.getElementById('map'), {
+        				center: self.hood,
+        				zoom: 10,
+        				disableDefaultUI: true
+    				});
+    				self.hideModalCloseBtn(false);
+    				self.loadRecyclingData();
+            	},
+            	
+            	error: function (xhr, textStatus, errorThrown) {
+            		self.hideModalSpinner(true);
+              		alert("Ooops, google maps server returned: textStatus= " + textStatus + " Error= " + errorThrown);
+            	}
+        	})
         };
+
+        self.loadRecyclingData = function() {
+        	var latlng = self.neighborhoodLat() + "," + self.neighborhoodLng();
+        	$.ajax({
+  				url: "https://api.foursquare.com/v2/venues/search",
+
+  				data: {
+  					client_id: "XOVHNWG4KKKESGADD0HOE3SWYTXVWYAPWHSQFC4CO4FHE4R5",
+  					client_secret: "FHXKIUQOFHCJUXQYECAVH3DYE50JEJZ1N1AKONXHHEMWVLZR",
+  					v: "20130815",
+  					ll: latlng,
+  					query: "recycle"
+  				},
+
+  				beforeSend: function() {
+            		self.hideModalSpinner(false);
+            	},
+
+  				success: function(data, textStatus, jqXHR) {
+  					var venues = $.map(data.response.venues, function(venue) { 
+  						venue.visible = ko.observable(true); 
+  						return venue; 
+  					});
+  					venues.sort(function(a, b){ return a.name.localeCompare(b.name); });
+  					self.places(venues);
+    				self.closeModalWindow();
+  				},
+
+  				error: function(jqXHR, textStatus, errorThrown) {
+  					alert("Ooops, foursquare returned: textStatus=" + textStatus + " Error= " + errorThrown);
+  				},
+
+  				complete: function() {
+            		self.hideModalSpinner(true);
+            	}
+			});
+        };
+
+        self.closeModalWindow = function() {
+        	document.querySelector('.close').click();
+        }; 
+
+        self.openModalWindow = function() {
+        	document.querySelector('.open').click();
+        }; 
 
         // Operations
 
         // Draw Map
         //self.hood = new google.maps.LatLng(37.338141, -121.886366);
+        /*
         self.hood = new google.maps.LatLng(37.4, -121.886366);
         self.map = new google.maps.Map(document.getElementById('map'), {
             center: self.hood,
             zoom: 10,
             disableDefaultUI: true
         });
+		*/
 
+        /*
         // Load Data (From 4Square or LocalStorage)
         $.ajax({
   			url: "https://api.foursquare.com/v2/venues/search?client_id=XOVHNWG4KKKESGADD0HOE3SWYTXVWYAPWHSQFC4CO4FHE4R5&client_secret=FHXKIUQOFHCJUXQYECAVH3DYE50JEJZ1N1AKONXHHEMWVLZR&v=20130815&ll=37.338141,-121.886366&query=recycle",
@@ -190,9 +269,10 @@ $(function() {
   				alert("Ooops, foursquare returned: textStatus=" + textStatus + " Error= " + errorThrown);
   			}
 		});
+		*/
 
 		// Show Modal Dialog
-		document.querySelector('.open').click();
+		self.openModalWindow();
 	}
 
 	ko.bindingHandlers.drawMarker = {

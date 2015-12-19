@@ -15,7 +15,7 @@
 <body>
 	<div id="map"></div>
 	<header>
-		<h1>YottaCycle - <a href="#openModal" title="Open" class="open">San Jose, CA</a></h1>
+		<h1>YottaCycle - <a href="#openModal" title="Open" class="open"><span data-bind="text: hoodSearchTerm"></span></a></h1>
 	
 		<div class="header-controls">
 			<div class="search-bar" data-bind="click: onSearchBarClick">
@@ -30,7 +30,11 @@
 	</header>
 
   <div class="places-section">
-    <h1>YottaCycle</h1>
+    <div class="places-header">
+      <h1>YottaCycle</h1>
+      <!-- <a href="#openModal" title="Open" class="open"><span data-bind="text: hoodSearchTerm"></span></a> -->
+    </div>
+
     <div class="places-list">
       <ul data-bind="foreach: places">
         <div class="info-window-template" data-bind="attr: { id: $parent.getInfoWindowDivId($data.id) }">
@@ -50,8 +54,8 @@
   
   <div id="openModal" class="modalDialog">  
     <div class="searchContent">
-      <div class="spinner" data-bind="hidden: hideSpinner"></div>
-      <a href="#closeModal" title="Close" class="close" data-bind="visible: hoodDefined, clickBubble: false">X</a>
+      <div class="spinner" data-bind="hidden: hideModalSpinner"></div>
+      <a href="#closeModal" title="Close" class="close" data-bind="hidden: hideModalCloseBtn, clickBubble: false">X</a>
       <h1>YottaCycle</h1>
       <p>Find a recylce facility near you.</p>
       <div class="inputs">
@@ -65,12 +69,11 @@
                                       ">
           </select>
         </div>
-        <a href="#" data-bind="click: searchForLocation, clickBubble: false"><span class="icon-search"></span> Search</a>
+        <a href="#" data-bind="click: searchForNeighborhood, clickBubble: false"><span class="icon-search"></span> Search</a>
       </div>
     </div>
   </div>
   
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPw0yXOiBKXu1E7fDxNjg6BD0ANIXiSv0&libraries=places"></script>
   <script src='js/jquery-1.11.3.min.js'></script>
   <script src='js/knockout-3.4.0.js'></script>
   <script src="js/app.js"></script>
