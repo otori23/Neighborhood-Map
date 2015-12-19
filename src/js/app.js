@@ -155,7 +155,7 @@ $(function() {
         	});
         };
 
-        self.searchForNeighborhood = function(model, event){
+        self.searchForNeighborhood = function(vm, event){
         	$.ajax({
             	url: "https://maps.googleapis.com/maps/api/js",
             	
@@ -234,14 +234,13 @@ $(function() {
 
         self.closeModalWindow = function() {
         	self.hoodSearchTerm("");
-        	document.querySelector('.close').click();
+        	self.hoodOptions.removeAll();
+        	$('.modalDialog').removeClass('open');
         }; 
 
         self.openModalWindow = function() {
-        	document.querySelector('.open').click();
+        	$('.modalDialog').addClass('open');
         }; 
-
-		self.openModalWindow();
 	}
 
 	ko.bindingHandlers.drawMarker = {

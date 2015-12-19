@@ -15,7 +15,7 @@
 <body>
 	<div id="map"></div>
 	<header>
-		<h1>YottaCycle - <a href="#openModal" title="Open" class="open"><span data-bind="text: currentNeighborhood"></span></a></h1>
+		<h1>YottaCycle - <a href="#" title="Select New Location"><span data-bind="text: currentNeighborhood, click: openModalWindow"></span></a></h1>
 	
 		<div class="header-controls">
 			<div class="search-bar" data-bind="click: onSearchBarClick">
@@ -52,10 +52,10 @@
 
   <img class="foursquare-attribution" alt="foursquare attribution" src="img/foursquare.png">
   
-  <div id="openModal" class="modalDialog">  
+  <div class="modalDialog open">  
     <div class="searchContent">
       <div class="spinner" data-bind="hidden: hideModalSpinner"></div>
-      <a href="#closeModal" title="Close" class="close" data-bind="hidden: hideModalCloseBtn, clickBubble: false">X</a>
+      <a href="#" title="Close" class="close" data-bind="hidden: hideModalCloseBtn, click: closeModalWindow, clickBubble: false">X</a>
       <h1>YottaCycle</h1>
       <p>Find a recylce facility near you.</p>
       <div class="inputs">

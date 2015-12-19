@@ -199,7 +199,7 @@ header .hamburger:hover {
 	overflow-y: auto;
 }
 
-.modalDialog:target {
+.modalDialog.open {
 	opacity: 1;
 	pointer-events: auto;
 }
