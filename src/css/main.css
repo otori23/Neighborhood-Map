@@ -294,6 +294,19 @@ header .hamburger:hover {
     font-size: inherit;
 }
 
+.modalDialog .geonames-attribution {
+	font-size: 1.5em;
+	position: fixed;
+	bottom: 0;
+	left:50%;
+
+	-webkit-transform: translateX(-50%);
+  	-moz-transform: translateX(-50%);
+  	-o-transform: translateX(-50%);
+  	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
 @media screen and (min-width: 400px) {
   header {
     font-size: 3em;
