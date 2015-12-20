@@ -220,6 +220,10 @@ $(function() {
   					self.currentNeighborhood(self.hoodSearchTerm());
   					self.searchValue(""); 
     				self.closeModalWindow();
+    				
+    				if(venues.length === 0){
+    					alert("No recycling facilities were found in " + self.currentNeighborhood() + ".");
+    				}
   				},
 
   				error: function(jqXHR, textStatus, errorThrown) {
