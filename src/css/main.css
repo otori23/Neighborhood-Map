@@ -130,13 +130,20 @@ header .hamburger:hover {
 	border-right: none;
 }
 
-.places-section h1 {
-	font-size: 3em;
+.places-section .places-header {
+	border-bottom: 2px solid black;
 	text-shadow: 4px 3px 6px rgba(0,0,0,.5);
 	color: rgb(25,25,25);
-	padding: 5px;
-	border-bottom: 2px solid black;
-} 
+	padding: 10px;
+}
+
+.places-header h1 {
+	font-size: 3em;
+}
+
+.places-header a {
+	font-size: 1.5em;
+}  
 
 .places-section .places-list {
 	max-height: 400px;
@@ -157,18 +164,18 @@ header .hamburger:hover {
 	border-bottom: none;
 }
 
-.places-section a {
+.places-list a {
 	text-decoration: none;
 	display: block;
 	padding: 10px;
 	color: rgb(0,0,0);
 }
 
-.places-section a:hover {
+.places-list a:hover {
 	background-color: rgba(0,0,0,0.26);
 }
 
-.places-section a:active {
+.places-list a:active {
 	text-shadow: 0 0 10px rgb(0,0,0);
 }
 
@@ -355,7 +362,7 @@ header .hamburger:hover {
     border-right: none;
   }
 
-  .places-section h1 {
-    display: none;
+  .places-section .places-header {
+  	display: none;
   }
 }
