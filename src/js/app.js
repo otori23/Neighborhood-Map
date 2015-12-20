@@ -254,7 +254,8 @@ $(function() {
 	        var content = $("#y" + place.id).html();
 
 	        var infoWindow = new google.maps.InfoWindow({
-    			content: content 
+    			content: content,
+    			maxWidth: 225 
   			});
 
 	        var marker = new google.maps.Marker({
