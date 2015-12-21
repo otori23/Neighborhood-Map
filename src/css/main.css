@@ -242,7 +242,7 @@ header .hamburger:hover {
 	} 
 }
 
-.searchContent a {
+.searchContent a.close, .searchContent a.search {
 	text-decoration: none;
 	display: inline-block;
 	padding: 7.5px 10px;
@@ -256,7 +256,7 @@ header .hamburger:hover {
 	box-shadow: 1px 1px 3px #000000;
 }
 
-.searchContent a:hover {
+.searchContent a.close:hover, .searchContent a.search:hover {
 	background: #2D1BB3;
 }
 
@@ -292,6 +292,39 @@ header .hamburger:hover {
     overflow-y: auto;
     overflow-x: visible;
     font-size: inherit;
+}
+
+.auto-complete-widget  ul {
+	list-style-type: none;
+	padding-left: 0;
+	color: black;
+	background-color: white;
+	border: 1px solid black;
+}
+
+.auto-complete-widget  li {
+	border-bottom: 1px solid black;
+	text-align: left;
+}
+
+.auto-complete-widget li:last-child {
+	border-bottom: none;
+}
+
+.auto-complete-widget a {
+	text-decoration: none;
+	display: block;
+	padding: 2px;
+	color: rgb(0,0,0);
+	overflow-x: visible;
+}
+
+.auto-complete-widget a:hover {
+	background-color: rgba(0,0,0,0.26);
+}
+
+.auto-complete-widget a:active {
+	text-shadow: 0 0 10px rgb(0,0,0);
 }
 
 .modalDialog .geonames-attribution {
@@ -332,7 +365,7 @@ header .hamburger:hover {
   	font-size: 5em;
   }
 
-  .searchContent a {
+  .searchContent a.close, .searchContent a.search {
   	padding: 15px 20px;
   	font-size: 1.8em;
   }

@@ -68,8 +68,13 @@
                                       hidden: hideHoodOptions
                                       ">
           </select>
+          <ul data-bind="foreach: hoodOptions, hidden: hideHoodOptions">
+            <li>
+              <a href="#"><span data-bind="text: $data.displayName"></span></a>
+            </li>
+          </ul>
         </div>
-        <a href="#" data-bind="click: searchForNeighborhood, clickBubble: false"><span class="icon-search"></span> Search</a>
+        <a href="#" class="search" data-bind="click: searchForNeighborhood, clickBubble: false"><span class="icon-search"></span> Search</a>
       </div>
     </div>
     <p class="geonames-attribution">Powered by <a href="http://www.geonames.org/">geonames.org</a><p>
