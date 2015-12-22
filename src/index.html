@@ -20,7 +20,8 @@
 		<div class="header-controls">
 			<div class="search-bar" data-bind="click: onSearchBarClick">
 				<span class="icon-search"></span>
-				<input type="text" class="filterInput" data-bind="textInput: searchValue, event: {keyup: onSearchBarKeyUp}", placeholder="Recycling Options...">
+				<input type="text" class="filterInput" placeholder="Recycling Options..." data-bind="textInput: placeSearchTerm, 
+                                                                                             event: {keyup: onSearchBarKeyUp}">
 			</div>
 	
 			<div class="hamburger" data-bind="click: onHamburgerClick">
@@ -60,10 +61,10 @@
       <p>Find a recylce facility near you.</p>
       <div class="inputs">
         <div class="auto-complete-widget">
-          <input type="text" placeholder="Enter Place..." data-bind="textInput: hoodSearchTerm, 
+          <input type="text" placeholder="Enter Place..." data-bind="textInput: neighborhoodSearchTerm, 
                                                                     event: {keyup: onNeighborhoodSearchKeyUp}">
-          <ul data-bind="foreach: hoodOptions, hidden: hideHoodOptions">
-            <li data-bind="click: $parent.onHoodSelected">
+          <ul data-bind="foreach: neighborhoodOptions, hidden: hideNeighborhoodOptions">
+            <li data-bind="click: $parent.onNeighborhoodSelected">
               <a href="#"><span data-bind="text: $data.displayName"></span></a>
             </li>
           </ul>

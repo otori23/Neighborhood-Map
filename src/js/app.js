@@ -9,9 +9,9 @@ $(function() {
     self.neighborhoodLng = ko.observable(-121.9);
 
 		// Data: Main Page
-		self.searchValue = ko.observable("");
+		self.placeSearchTerm = ko.observable("");
     self.places = ko.observableArray([]);
-    self.lastSelection = {
+    self.previousPlaceSelection = {
       exists: false,
 	    marker: null,
 	    infoWindow: null,
@@ -19,24 +19,24 @@ $(function() {
 	   };
 
 		// Data: Modal Page
-    self.hoodOptions = ko.observableArray([]);
-    self.selectedHood = ko.observable();
-    self.selectedHood.subscribe(function (geoname) {
+    self.neighborhoodOptions = ko.observableArray([]);
+    self.selectedNeighborhood = ko.observable();
+    self.selectedNeighborhood.subscribe(function (geoname) {
     	if(geoname !== undefined){
-    		self.hoodSearchTerm(geoname.displayName);
+    		self.neighborhoodSearchTerm(geoname.displayName);
     		self.neighborhoodLat(geoname.lat);
     		self.neighborhoodLng(geoname.lng);
-    		self.hoodOptions.removeAll();
+    		self.neighborhoodOptions.removeAll();
     	}	
   	});
     self.hideModalCloseBtn = ko.observable(true);
     self.hideModalSpinner = ko.observable(true);
-    self.hoodSearchTerm = ko.observable("").extend({ 
+    self.neighborhoodSearchTerm = ko.observable("").extend({ 
       rateLimit: { method: "notifyWhenChangesStop", timeout: 500 } 
     });
     self.minSearchTermLength = 3;
-    self.hideHoodOptions = ko.computed(function() {
-    	return this.hoodOptions().length === 0;
+    self.hideNeighborhoodOptions = ko.computed(function() {
+    	return this.neighborhoodOptions().length === 0;
     }, self);
 	    
     // Event Handlers
@@ -52,7 +52,7 @@ $(function() {
 
     self.onSearchBarKeyUp = function () {
     	var places = self.places();
-    	var re = new RegExp(self.searchValue().trim(), "i");
+    	var re = new RegExp(self.placeSearchTerm().trim(), "i");
     	places.forEach(function(place) {
     		if(place.name.match(re)) {
     			place.visible(true);
@@ -80,34 +80,34 @@ $(function() {
 				infoWindow.open(self.map, marker);
 				marker.setIcon('img/green-dot.png');
 
-				if(self.lastSelection.exists) {
-					self.lastSelection.marker.setIcon(null);
-					self.lastSelection.infoWindow.close();
-					$(self.lastSelection.element).css('background-color', '');
+				if(self.previousPlaceSelection.exists) {
+					self.previousPlaceSelection.marker.setIcon(null);
+					self.previousPlaceSelection.infoWindow.close();
+					$(self.previousPlaceSelection.element).css('background-color', '');
 				}
-				self.setLastSelection(marker, infoWindow, element);
+				self.setPreviousPlaceSelection(marker, infoWindow, element);
 			}
 			else {
-				self.clearLastSelection();
+				self.clearPreviousPlaceSelection();
 			}
     };
 
-    self.clearLastSelection = function() {
-    	self.lastSelection.infoWindow.close(); 
-      self.lastSelection.marker.setIcon(null); 
-      $(self.lastSelection.element).css('background-color', '');
+    self.clearPreviousPlaceSelection = function() {
+    	self.previousPlaceSelection.infoWindow.close(); 
+      self.previousPlaceSelection.marker.setIcon(null); 
+      $(self.previousPlaceSelection.element).css('background-color', '');
 
-      self.lastSelection.exists = false;
-      self.lastSelection.marker = null;
-      self.lastSelection.infoWindow = null;
-      self.lastSelection.element = null;
+      self.previousPlaceSelection.exists = false;
+      self.previousPlaceSelection.marker = null;
+      self.previousPlaceSelection.infoWindow = null;
+      self.previousPlaceSelection.element = null;
     };
 
-    self.setLastSelection = function(marker, infoWindow, element) {
-      self.lastSelection.exists = true;
-			self.lastSelection.marker = marker;
-			self.lastSelection.infoWindow = infoWindow;
-			self.lastSelection.element = element;
+    self.setPreviousPlaceSelection = function(marker, infoWindow, element) {
+      self.previousPlaceSelection.exists = true;
+			self.previousPlaceSelection.marker = marker;
+			self.previousPlaceSelection.infoWindow = infoWindow;
+			self.previousPlaceSelection.element = element;
     };
 
     self.getInfoWindowDivId = function(id) {
@@ -120,7 +120,7 @@ $(function() {
         	
         	data: {
         		userName: "otori23",
-        		name_startsWith: self.hoodSearchTerm,
+        		name_startsWith: self.neighborhoodSearchTerm,
         		featureClass: "P",
         		style: "medium",
         		maxRows: 3,
@@ -128,8 +128,8 @@ $(function() {
         	},
 
         	beforeSend: function() {
-        		if(self.hoodSearchTerm().length < self.minSearchTermLength) {
-    				  self.hoodOptions.removeAll();
+        		if(self.neighborhoodSearchTerm().length < self.minSearchTermLength) {
+    				  self.neighborhoodOptions.removeAll();
     				  return false;
             }
         		self.hideModalSpinner(false);
@@ -140,7 +140,7 @@ $(function() {
               geoname.displayName = geoname.name + ', ' + geoname.adminCode1 + ', ' + geoname.countryCode;
               return geoname; 
             });
-            self.hoodOptions(geonames);
+            self.neighborhoodOptions(geonames);
         	},
         	
         	error: function (xhr, textStatus, errorThrown) {
@@ -215,8 +215,8 @@ $(function() {
 				});
 				venues.sort(function(a, b){ return a.name.localeCompare(b.name); });
 				self.places(venues);
-				self.currentNeighborhood(self.hoodSearchTerm());
-				self.searchValue(""); 
+				self.currentNeighborhood(self.neighborhoodSearchTerm());
+				self.placeSearchTerm(""); 
 				self.closeModalWindow();
 				
 				if(venues.length === 0){
@@ -235,8 +235,8 @@ $(function() {
     };
 
     self.closeModalWindow = function() {
-    	self.hoodSearchTerm("");
-    	self.hoodOptions.removeAll();
+    	self.neighborhoodSearchTerm("");
+    	self.neighborhoodOptions.removeAll();
     	$('.modalDialog').removeClass('open');
     }; 
 
@@ -244,8 +244,8 @@ $(function() {
     	$('.modalDialog').addClass('open');
     };
 
-    self.onHoodSelected = function() {
-      self.selectedHood(this);
+    self.onNeighborhoodSelected = function() {
+      self.selectedNeighborhood(this);
     };
 	}
 
@@ -266,7 +266,7 @@ $(function() {
 	    });
 
       infoWindow.addListener('closeclick',function(){
-        bindingContext.$parent.clearLastSelection();
+        bindingContext.$parent.clearPreviousPlaceSelection();
 	    });
 
       marker.addListener('click', function() {
@@ -296,8 +296,8 @@ $(function() {
       	marker.setMap(map);
       }
       else {
-      	if(marker === bindingContext.$parent.lastSelection.marker) {
-      		bindingContext.$parent.clearLastSelection();
+      	if(marker === bindingContext.$parent.previousPlaceSelection.marker) {
+      		bindingContext.$parent.clearPreviousPlaceSelection();
       	}
       	marker.setMap(null);
       }
