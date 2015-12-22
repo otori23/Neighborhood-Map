@@ -307,13 +307,6 @@ header .hamburger:hover {
 	width: 100%;
 }
 
-.auto-complete-widget select {
-	display: block;
-    overflow-y: auto;
-    overflow-x: visible;
-    font-size: inherit;
-}
-
 .auto-complete-widget  ul {
 	list-style-type: none;
 	padding-left: 0;
