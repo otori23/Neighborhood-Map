@@ -62,14 +62,8 @@
         <div class="auto-complete-widget">
           <input type="text" placeholder="Enter Place..." data-bind="textInput: hoodSearchTerm, 
                                                                     event: {keyup: onNeighborhoodSearchKeyUp}">
-          <select size="3" data-bind="options: hoodOptions,
-                                      optionsText: 'displayName', 
-                                      value: selectedHood, 
-                                      hidden: hideHoodOptions
-                                      ">
-          </select>
           <ul data-bind="foreach: hoodOptions, hidden: hideHoodOptions">
-            <li>
+            <li data-bind="click: $parent.onHoodSelected">
               <a href="#"><span data-bind="text: $data.displayName"></span></a>
             </li>
           </ul>
