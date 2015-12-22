@@ -144,7 +144,8 @@ $(function() {
         	},
         	
         	error: function (xhr, textStatus, errorThrown) {
-            alert("Ooops, geonames server returned: textStatus= " + textStatus + " Error= " + errorThrown);
+            var msg = "Ooops, geonames server returned: textStatus= " + textStatus + " Error= " + errorThrown;
+            console.log(msg);
         	},
 
         	complete: function() {
@@ -185,52 +186,59 @@ $(function() {
       	},
       	
       	error: function (xhr, textStatus, errorThrown) {
-      		self.hideModalSpinner(true);
-        	alert("Ooops, google maps server returned: textStatus= " + textStatus + " Error= " + errorThrown);
-      	}
-    	})
+          var msg = "Ooops, google maps server returned: textStatus= " + textStatus + " Error= " + errorThrown;
+          console.log(msg);
+        	alert(msg);
+      	},
+
+        complete: function() { 
+          self.hideModalSpinner(true);
+        }
+    	});
     };
 
     self.loadRecyclingData = function() {
     	var latlng = self.neighborhoodLat() + "," + self.neighborhoodLng();
     	$.ajax({
-			url: "https://api.foursquare.com/v2/venues/search",
+  			url: "https://api.foursquare.com/v2/venues/search",
 
-			data: {
-				client_id: "XOVHNWG4KKKESGADD0HOE3SWYTXVWYAPWHSQFC4CO4FHE4R5",
-				client_secret: "FHXKIUQOFHCJUXQYECAVH3DYE50JEJZ1N1AKONXHHEMWVLZR",
-				v: "20130815",
-				ll: latlng,
-				query: "recycle"
-			},
+  			data: {
+  				client_id: "XOVHNWG4KKKESGADD0HOE3SWYTXVWYAPWHSQFC4CO4FHE4R5",
+  				client_secret: "FHXKIUQOFHCJUXQYECAVH3DYE50JEJZ1N1AKONXHHEMWVLZR",
+  				v: "20130815",
+  				ll: latlng,
+  				query: "recycle"
+  			},
 
-			beforeSend: function() {
-        self.hideModalSpinner(false);
-      },
+  			beforeSend: function() {
+          self.hideModalSpinner(false);
+        },
 
-			success: function(data, textStatus, jqXHR) {
-				var venues = $.map(data.response.venues, function(venue) { 
-					venue.visible = ko.observable(true); 
-					return venue; 
-				});
-				venues.sort(function(a, b){ return a.name.localeCompare(b.name); });
-				self.places(venues);
-				self.currentNeighborhood(self.neighborhoodSearchTerm());
-				self.placeSearchTerm(""); 
-				self.closeModalWindow();
-				
-				if(venues.length === 0){
-					alert("No recycling facilities were found in " + self.currentNeighborhood() + ".");
-				}
-			},
+  			success: function(data, textStatus, jqXHR) {
+  				var venues = $.map(data.response.venues, function(venue) { 
+  					venue.visible = ko.observable(true); 
+  					return venue; 
+  				});
+  				venues.sort(function(a, b){ return a.name.localeCompare(b.name); });
+  				self.places(venues);
+  				self.currentNeighborhood(self.neighborhoodSearchTerm());
+  				self.placeSearchTerm(""); 
+  				self.closeModalWindow();
+  				
+  				if(venues.length === 0){
+  					alert("No recycling facilities were found in " + self.currentNeighborhood() + ".");
+  				}
+  			},
 
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert("Ooops, foursquare returned: textStatus=" + textStatus + " Error= " + errorThrown);
-			},
+  			error: function(jqXHR, textStatus, errorThrown) {
+          var msg = "Ooops, foursquare returned: textStatus=" + textStatus + " Error= " + errorThrown;
+          console.log(msg);
+          alert(msg);
+  			},
 
-			complete: function() {
-        		self.hideModalSpinner(true);
-        	}
+  			complete: function() { 
+          self.hideModalSpinner(true);
+        }
 	    });
     };
 
