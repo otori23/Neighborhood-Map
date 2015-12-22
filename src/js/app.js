@@ -31,10 +31,9 @@ $(function() {
   	});
     self.hideModalCloseBtn = ko.observable(true);
     self.hideModalSpinner = ko.observable(true);
-    self.hoodSearchTerm = ko.observable("")
-    						.extend({ 
-    							rateLimit: { method: "notifyWhenChangesStop", timeout: 500 } 
-    						});
+    self.hoodSearchTerm = ko.observable("").extend({ 
+      rateLimit: { method: "notifyWhenChangesStop", timeout: 500 } 
+    });
     self.minSearchTermLength = 3;
     self.hideHoodOptions = ko.computed(function() {
     	return this.hoodOptions().length === 0;
@@ -130,22 +129,22 @@ $(function() {
 
         	beforeSend: function() {
         		if(self.hoodSearchTerm().length < self.minSearchTermLength) {
-    				self.hoodOptions.removeAll();
-    				return false;
-    			}
+    				  self.hoodOptions.removeAll();
+    				  return false;
+            }
         		self.hideModalSpinner(false);
         	},
 
         	success: function(data) {
-				var geonames = $.map(data.geonames, function(geoname) { 
-					geoname.displayName = geoname.name + ', ' + geoname.adminCode1 + ', ' + geoname.countryCode;
-					return geoname; 
-				});
-				self.hoodOptions(geonames);
+				    var geonames = $.map(data.geonames, function(geoname) { 
+              geoname.displayName = geoname.name + ', ' + geoname.adminCode1 + ', ' + geoname.countryCode;
+              return geoname; 
+            });
+            self.hoodOptions(geonames);
         	},
         	
         	error: function (xhr, textStatus, errorThrown) {
-          		alert("Ooops, geonames server returned: textStatus= " + textStatus + " Error= " + errorThrown);
+            alert("Ooops, geonames server returned: textStatus= " + textStatus + " Error= " + errorThrown);
         	},
 
         	complete: function() {
@@ -156,39 +155,39 @@ $(function() {
 
     self.searchForNeighborhood = function(vm, event){
     	$.ajax({
-        	url: "https://maps.googleapis.com/maps/api/js",
-        	
-        	dataType: "jsonp", 
+        url: "https://maps.googleapis.com/maps/api/js",
+      	
+      	dataType: "jsonp", 
 
-        	data: {
-        		key: "AIzaSyDPw0yXOiBKXu1E7fDxNjg6BD0ANIXiSv0"
-        	},
+      	data: {
+      		key: "AIzaSyDPw0yXOiBKXu1E7fDxNjg6BD0ANIXiSv0"
+      	},
 
-        	beforeSend: function() {
-        		if(self.map !== undefined) {
-    				self.hood = new google.maps.LatLng(self.neighborhoodLat(), self.neighborhoodLng());
-				self.map.setCenter(self.hood);
-				self.loadRecyclingData();
-    				return false;
-    			}
-        		self.hideModalSpinner(false);
-        	},
+      	beforeSend: function() {
+      		if(self.map !== undefined) {
+            self.hood = new google.maps.LatLng(self.neighborhoodLat(), self.neighborhoodLng());
+			      self.map.setCenter(self.hood);
+			      self.loadRecyclingData();
+  				  return false;
+  			  }
+      		self.hideModalSpinner(false);
+      	},
 
-        	success: function(data) {
-    			self.hood = new google.maps.LatLng(self.neighborhoodLat(), self.neighborhoodLng());
-				self.map = new google.maps.Map(document.getElementById('map'), {
-    				center: self.hood,
-    				zoom: 10,
-    				disableDefaultUI: true
-				});
-				self.hideModalCloseBtn(false);
-				self.loadRecyclingData();
-        	},
-        	
-        	error: function (xhr, textStatus, errorThrown) {
-        		self.hideModalSpinner(true);
-          		alert("Ooops, google maps server returned: textStatus= " + textStatus + " Error= " + errorThrown);
-        	}
+      	success: function(data) {
+          self.hood = new google.maps.LatLng(self.neighborhoodLat(), self.neighborhoodLng());
+          self.map = new google.maps.Map(document.getElementById('map'), {
+  				  center: self.hood,
+  				  zoom: 10,
+  				  disableDefaultUI: true
+			    });
+			    self.hideModalCloseBtn(false);
+			    self.loadRecyclingData();
+      	},
+      	
+      	error: function (xhr, textStatus, errorThrown) {
+      		self.hideModalSpinner(true);
+        	alert("Ooops, google maps server returned: textStatus= " + textStatus + " Error= " + errorThrown);
+      	}
     	})
     };
 
@@ -206,8 +205,8 @@ $(function() {
 			},
 
 			beforeSend: function() {
-        		self.hideModalSpinner(false);
-        	},
+        self.hideModalSpinner(false);
+      },
 
 			success: function(data, textStatus, jqXHR) {
 				var venues = $.map(data.response.venues, function(venue) { 
