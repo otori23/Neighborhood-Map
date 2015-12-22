@@ -231,14 +231,33 @@ header .hamburger:hover {
 .searchContent .spinner {
 	width: 70px;
 	height: 70px;
-	-webkit-animation: sweep 1s infinite linear;
 	border-radius:35px;
 	border-bottom:5px solid #2D5BE3;
 	display: inline-block;
+
+	-webkit-animation: sweep 1s infinite linear;
+	-moz-animation: sweep 1s infinite linear;
+	-o-animation: sweep 1s infinite linear;
+	animation: sweep 1s infinite linear;
 }
 
 @-webkit-keyframes sweep { 
 	to { -webkit-transform: rotate(360deg); 
+	} 
+}
+
+@-moz-keyframes sweep { 
+	to { -moz-transform: rotate(360deg); 
+	} 
+}
+
+@-o-keyframes sweep { 
+	to { -o-transform: rotate(360deg); 
+	} 
+}
+
+@keyframes sweep { 
+	to { transform: rotate(360deg); 
 	} 
 }
 
