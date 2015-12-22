@@ -285,6 +285,7 @@ header .hamburger:hover {
 	display: block;
 	font-size: inherit;
 	padding: 4px 0;
+	width: 100%;
 }
 
 .auto-complete-widget select {
