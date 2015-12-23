@@ -298,6 +298,7 @@ header .hamburger:hover {
 	font-size: 1.5em;
 	vertical-align: top;
 	width: 180px;
+	position: relative;
 }
 
 .auto-complete-widget input[type="text"] {
@@ -315,6 +316,8 @@ header .hamburger:hover {
 	border: 1px solid black;
 	white-space: nowrap;
     display: inline-block;
+    position: absolute;
+    left: 0;
 }
 
 .auto-complete-widget  li {
