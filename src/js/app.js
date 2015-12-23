@@ -137,7 +137,7 @@ $(function() {
 
         	success: function(data) {
 				    var geonames = $.map(data.geonames, function(geoname) { 
-              geoname.displayName = geoname.name + ', ' + geoname.adminCode1 + ', ' + geoname.countryCode;
+              geoname.displayName = geoname.name + ', ' + geoname.adminCode1 + ', ' + geoname.countryName;
               return geoname; 
             });
             self.neighborhoodOptions(geonames);

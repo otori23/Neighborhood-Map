@@ -313,6 +313,8 @@ header .hamburger:hover {
 	color: black;
 	background-color: white;
 	border: 1px solid black;
+	white-space: nowrap;
+    display: inline-block;
 }
 
 .auto-complete-widget  li {
