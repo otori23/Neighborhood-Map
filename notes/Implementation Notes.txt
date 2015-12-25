@@ -1,0 +1,265 @@
+September 13 2015
+
+1) Get map on page
+
+2) Get places on map (use google places api)
+
+3) Build Steps
+
+- CSS preprocessing (Sass/Less -> css)
+- Transpilation (e.g. CoffeeScript/TypeScript -> Javascript)
+- Optimization (e.g. images)
+- Minification
+- Concatenation (many js files -> one js file)
+- Cache Busting
+- Unit Testing 
+- Linting
+- File watching (Trigger Browser realods, etc)
+
+4) Build Workflow from Gulp book
+
+- Set up the project
+- Copy static files to dist
+- Sass to CSS
+- Introducing Browserify
+- Starting up a development server
+- Adding basic automation
+- Error handling
+- Make it smoother with BrowserSync
+- Minification for production
+- Sourcemaps for development
+- Enjoy the automation
+- Cach Busting
+
+5) Explored Tecnologies
+
+- Bootstrap
+- Google maps API
+- KnockoutJS
+- Google places API
+
+6) Google Maps API Key
+
+AIzaSyDPw0yXOiBKXu1E7fDxNjg6BD0ANIXiSv0
+
+7) Progress so far
+
+- put map on page
+- get places from google places api
+- for each place create a marker
+- add title to each marker
+
+8) Summary
+
+- JS objects from places API is the "data" for the viewmodel
+- how to turn this effciently into KO view model (manually or mapping pluggin)?
+- add faviicon???
+- use IIFE to add click event handler to markers (so that info window displays details on location)
+- think of how to integrate KO into the whole thing; start with view model creation
+- implement list view 
+- implement search bar
+- look at other projects to understand how professionals structure their app
+- what are my build steps for this projects
+
+
+// TODO
+
+- Bower ???
+- Browserify ???
+- RequireJS ??? (e.g. for AMD)
+- underscore ???
+- CSS
+
+1) CSS
+
+a) Always remember to CSS Reset
+
+- the styles basically remove all margins, padding, and font size from the most common block-level elements
+- the reset styles eliminate many of the cross-browser display problems you’ll encounter related to these properties
+- at a bare minimum, you should always include this set of styles in every style sheet you create
+- probably the most important properties are the margin and padding settings in the first style
+- there’s enough cross-browser weirdness related to those two properties that you should always zero these out and start fresh
+
+b) Floating list-view like Side-bar note for Tutorial 7
+
+- Chapter 7 tutorial: will want the list-view of places to be positioned like the note in this chapter's tutorial
+- floating with box-shadow and some type of margin spacing it from browser's edge
+
+c) Setting Width of List View in tutorial for chapter 6
+
+- see how the list is styled (width + float) in tutorial for Chapter 6
+
+d) Chapter 9 - Vertical List based Nav construction is similar to needed list view
+
+
+Octorber 27 2015
+
+1) Font Icons for Magnifying Glass & Hamburger
+
+- use iconmoon's web app to generate a font file for the glyphs you want
+- download the font files, sample css, and demo locally
+- the iconmoon web app gives you the html snippet needed to include the fonts in your html 
+- link to the with that contians the @font-face directive for your fonts
+- add html for you font into your project
+- later can use the import the json that is part of the download package to the iconmoon site
+- then you can retrieve the html snippet for you project
+
+- List of icon fonts
+https://css-tricks.com/flat-icons-icon-fonts/
+
+- General information on how to use iconmoon
+https://css-tricks.com/html-for-icon-font-usage/
+
+- Icon moons web site (see the docs section)
+https://icomoon.io/
+
+- Icon moons app for generating font files
+https://icomoon.io/app/#/select
+
+
+November 08th 2015
+
+1) Add "places" tab on UI for small screens instead of thick border
+http://www.verizonwireless.com/support/knowledge-base-14613/
+
+
+November 14th 2015
+
+1) Foursquare
+
+- client ID: 		XOVHNWG4KKKESGADD0HOE3SWYTXVWYAPWHSQFC4CO4FHE4R5
+- client secret:	FHXKIUQOFHCJUXQYECAVH3DYE50JEJZ1N1AKONXHHEMWVLZR
+- email: 		google
+- password: 		social
+- user ID: 		146126891
+
+- understand how to provide attribution
+- understand the policy and rules
+
+2) See getfoodstar.com example, on 4Square, for how to impement you apps view 
+- https://developer.foursquare.com/overview/attribution
+
+- actaully the way 4Square presents their results is what you are going for
+
+3) YottaCycle foursquare API Request
+
+https://api.foursquare.com/v2/venues/search?client_id=XOVHNWG4KKKESGADD0HOE3SWYTXVWYAPWHSQFC4CO4FHE4R5&client_secret=FHXKIUQOFHCJUXQYECAVH3DYE50JEJZ1N1AKONXHHEMWVLZR&v=20130815&ll=37.338141,-121.886366&query=recycle
+
+
+November 27th 2015
+
+Favicon
+
+1) Logo Creation Tool - http://www.logomakr.com/
+
+- search for "circle arrow" in "Search Graphics" bar
+- select one of the graphics
+- add a text 'Y' with font-family: Pixel & Monospace; font: Cousine
+- place text at center of circular arrow
+- save as 306x279 png image
+  
+
+2) Attribution Text
+
+Circle graphic by <a href="http://www.freepik.com/">Freepik</a> from <a href="http://www.flaticon.com/">Flaticon</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Made with <a href="http://logomakr.com" title="Logo Maker">Logo Maker</a>
+
+3) Favicon Generator - http://www.favicon-generator.org/
+
+- select local image file
+- choose favicon options
+- generate the icon file
+- link to your web page by placing the following mark-up in the head section of your html
+
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+4) Text fron favicon generator site
+
+What are Favicons?
+
+Favicons are small 16x16 icon files that are displayed next to the URL of your site in a browser's address bar. Additionally they're often displayed next to the name of your site in a user's list of open tabs and bookmark listings making it easier for the user to quickly identify amongst other sites.
+
+What are App Icons?
+
+App Icons are the images you press on your smartphone to launch an application. As newer phones are released with higher resolution screens, higher resolution app icons are needed. Developers still want to maintain support for the older phones with lower resoltion so when you create an app icon you need to create several size variations of the same image. This is true for all smartphones like the iPhone and Android, and even tablets like iPad.
+
+What does this tool do?
+
+Although many modern web browsers support favicons saved as GIFs, PNGs or other popular file formats all versions of Internet Explorer still require favicons to be saved as ICO files (a Microsoft icon format). This tool provides an easy way to convert any GIF, PNG or JPEG to ICO which is supported by all modern web browsers. It also enables you to create favicons from scratch via a handy online editor. Additionally the editor lets you manually tweak generated favicons to ensure the best possible result.
+
+Using a favicon
+
+After generating a favicon with this tool download and save to the root directory of your site. Then include the following code in the head of your HTML document.
+
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+5) Other Favicon Generator - http://tools.dynamicdrive.com/favicon/
+
+This one seems to support transparency in the ico file
+The generator from (3) does not seem to support transparency
+
+December 16th 2015
+
+1) www.geonames.org
+
+username: <<last>><<soccer>>
+email: google
+password: social
+
+2) Test api.geonames.org/search
+
+- XML response
+api.geonames.org/search
+
+- JSON response
+api.geonames.org/searchJSON
+api.geonames.org/search?type=json
+
+- sample request
+http://api.geonames.org/searchJSON?userName=otori23&lang=en&featureClass=P&style=full&maxRows=1&name_startsWith=san&_=1450305380567&countryBias=US&formatted=true
+
+- will use the following request in app
+http://api.geonames.org/searchJSON?userName=otori23&name_startsWith=san&featureClass=P&style=medium&maxRows=3&countryBias=US
+
+- response
+{
+  "totalResultsCount": 77760,
+  "geonames": [{
+    "countryId": "6252001",
+    "adminCode1": "CA",
+    "countryName": "United States",
+    "fclName": "city, village,...",
+    "countryCode": "US",
+    "lng": "-117.15726",
+    "fcodeName": "seat of a second-order administrative division",
+    "toponymName": "San Diego",
+    "fcl": "P",
+    "name": "San Diego",
+    "fcode": "PPLA2",
+    "geonameId": 5391811,
+    "lat": "32.71533",
+    "adminName1": "California",
+    "population": 1307402
+  }]
+}
+
+- On selection, pull out
+response.geonames[#].toponymName = San Diego
+-or-
+response.geonames[#].name = San Diego
+
+response.geonames[#].adminCode1 = CA
+
+response.geonames[#].countryCode = US
+-or-
+(response.geonames[#].countryName = United States)
+
+response.geonames[#].lng = "###"
+response.geonames[#].lat = "###"
+
+
+ 
+
+
+ 
