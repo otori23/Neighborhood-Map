@@ -1,9 +1,12 @@
-$(function() {	
+$(function() {
+  /**
+   * Yotta Cycle App View Model.
+   */	
 	function YottaCycleAppViewModel() {
 		// Data
 		var self = this;
 
-		// default neighborhood = San Jose, CA, US
+		// default neighborhood == San Jose, CA, US
 		self.currentNeighborhood = ko.observable("");
     self.neighborhoodLat = ko.observable(37.4);
     self.neighborhoodLng = ko.observable(-121.9);
@@ -39,7 +42,7 @@ $(function() {
     	return this.neighborhoodOptions().length === 0;
     }, self);
 	    
-    // Event Handlers
+    // Event Handlers: Main Page
     self.onHamburgerClick = function() {
     		var $placesSection = $(".places-section");
     		$placesSection.toggleClass('open-places-section');
@@ -114,6 +117,12 @@ $(function() {
     	return 'y'+id;
     };
 
+    // Event Handlers: Modal Page
+
+    /**
+     * Send geonames query to get a list of suggested location names
+     * based on user's entry in text box on modal page
+     */
     self.onNeighborhoodSearchKeyUp = function() {
     	$.ajax({
         	url: "http://api.geonames.org/searchJSON",
@@ -154,6 +163,9 @@ $(function() {
     	});
     };
 
+    /**
+     * Send google maps query based on location selected by user
+     */
     self.searchForNeighborhood = function(vm, event){
     	$.ajax({
         url: "https://maps.googleapis.com/maps/api/js",
@@ -197,6 +209,10 @@ $(function() {
     	});
     };
 
+    /**
+     * Send foursquare query to find recyle facilites near the location
+     * selected by the user
+     */
     self.loadRecyclingData = function() {
     	var latlng = self.neighborhoodLat() + "," + self.neighborhoodLng();
     	$.ajax({
@@ -252,11 +268,18 @@ $(function() {
     	$('.modalDialog').addClass('open');
     };
 
+    /**
+     * Update vm when a user selects one of the suggested locations from geonames
+     */
     self.onNeighborhoodSelected = function() {
       self.selectedNeighborhood(this);
     };
 	}
 
+  /**
+   * Custom KO binding used to draw google map marker
+   * it ties a map marker to a list element in the DOM
+   */
 	ko.bindingHandlers.drawMarker = {
     init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
       var place = bindingContext.$data;
@@ -312,6 +335,9 @@ $(function() {
     }
 	};
 
+  /**
+   * Custom KO binding used to mimic the visibility css property
+   */
 	ko.bindingHandlers.hidden = {
 		update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
 			if(ko.unwrap(valueAccessor())){
