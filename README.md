@@ -1,9 +1,9 @@
 #YottaCycle
-todo [YottaCycle]("The YottaCycle App") is single page web application featuring a map showing the locations of recycling facilites in a selected geographic area.
+[YottaCycle](http://otori23.github.io/YottaCycle/ "The YottaCycle App") is single page web application featuring a map showing the locations of recycling facilites in a selected geographic area.
 
 ##User Guide
 
-Go to Live Site: todo [YottaCycle]("The YottaCycle App")
+Go to Live Site: [YottaCycle](http://otori23.github.io/YottaCycle/ "The YottaCycle App")
 
 - Enter a location in the input textbox on the welcome screen
 - As you type, a list of suggested locations will appear under the textbox based on your partial entry
@@ -50,7 +50,7 @@ The build system is based on [Node.js](https://nodejs.org/en/ "Node.js") and [Gu
 
 Clone this repository
 	
-	todo git clone https://github.com/otori23/Neighborhood-Map.git
+	git clone https://github.com/otori23/YottaCycle.git
 
 Get the node modules used in the build process using npm
 
