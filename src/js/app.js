@@ -41,7 +41,7 @@ $(function() {
     self.hideNeighborhoodOptions = ko.computed(function() {
     	return this.neighborhoodOptions().length === 0;
     }, self);
-	    
+
     // Event Handlers: Main Page
     self.onHamburgerClick = function() {
     		var $placesSection = $(".places-section");
@@ -198,6 +198,7 @@ $(function() {
       	},
       	
       	error: function (xhr, textStatus, errorThrown) {
+          localStorage.ycGeoname = null;
           var msg = "Ooops, google maps server returned: textStatus= " + textStatus + " Error= " + errorThrown;
           console.log(msg);
         	alert(msg);
@@ -244,9 +245,17 @@ $(function() {
   				if(venues.length === 0){
   					alert("No recycling facilities were found in " + self.currentNeighborhood() + ".");
   				}
+
+          // Persist Current Location
+          var geoname = {};
+          geoname.lat = self.neighborhoodLat();
+          geoname.lng = self.neighborhoodLng();
+          geoname.neighborhoodSearchTerm = self.currentNeighborhood();
+          localStorage.ycGeoname = JSON.stringify(geoname); 
   			},
 
   			error: function(jqXHR, textStatus, errorThrown) {
+          localStorage.ycGeoname = null;
           var msg = "Ooops, foursquare returned: textStatus=" + textStatus + " Error= " + errorThrown;
           console.log(msg);
           alert(msg);
@@ -274,6 +283,18 @@ $(function() {
     self.onNeighborhoodSelected = function() {
       self.selectedNeighborhood(this);
     };
+
+    /**
+     * Use Persistent Data if it exists
+     */
+    if (localStorage.ycGeoname) {
+      var geoname = JSON.parse(localStorage.ycGeoname);
+      self.neighborhoodLat(geoname.lat);
+      self.neighborhoodLng(geoname.lng);
+      self.neighborhoodSearchTerm(geoname.neighborhoodSearchTerm);
+      self.searchForNeighborhood();
+      $('.modalDialog').removeClass('open');
+    }
 	}
 
   /**
