@@ -1,0 +1,70 @@
+﻿December 1st 2015
+
+1) JSON Webservices
+
+GeoNames offers most webservices in XML and JSON format. JSON has the advantage that is can be used to directly access the geonames webservice from javascript code, whereas using XML the browser will throw a security exception if an xml call to another webserver is made.
+All JSON services accept an optional parameter 'callback' for a javascript function call and a parameter 'formatted=true' to format the output with linefeeds and indentation. The latter is useful to view the JSON result in a browser but should not be used in production usage (waste of bandwith).
+
+2) United States Coubtry Info
+
+<country>
+  <countryCode>US</countryCode>
+  <countryName>United States</countryName>
+  <isoNumeric>840</isoNumeric>
+  <isoAlpha3>USA</isoAlpha3>
+  <fipsCode>US</fipsCode>
+  <continent>NA</continent>
+  <continentName>North America</continentName>
+  <capital>Washington</capital>
+  <areaInSqKm>9629091.0</areaInSqKm>
+  <population>310232863</population>
+  <currencyCode>USD</currencyCode>
+  <languages>en-US,es-US,haw,fr</languages>
+  <geonameId>6252001</geonameId>
+  <west>-124.733253</west>
+  <north>49.388611</north>
+  <east>-66.954811</east>
+  <south>24.544245</south>
+  <postalCodeFormat>#####-####</postalCodeFormat>
+</country>
+
+3) Examples on how to use the service
+
+http://vikku.info/programming/geodata/geonames-get-country-state-city-hierarchy.htm
+
+reference for above example
+
+http://www.geonames.org/export/place-hierarchy.html#children
+
+4) Explore how Foursquare does it ?
+
+Foursquare uses:
+Mapbox
+OpenStreetMap
+
+Just type in a place and it updates three suggestions for autocomplete as you type 
+
+Stack Overflow thread on this:
+
+http://stackoverflow.com/questions/19811259/how-to-implement-the-geo-location-autocomplete-on-searching-similar-to-what-four
+
+Thread claims foursquare uses geonames too:
+
+Finally I found that I need to use a webservice from geonames(http://www.geonames.org/source-code/) to do the autocomplete, and then use it result to pass the lat and lng to foursquare.
+
+A reference from foursquare link (https://developer.foursquare.com/docs/responses/geocode), they use this geonames dataset too.
+
+5) http://tompi.github.io/jeoquery/
+
+Explore the jQuery ui example: 
+http://tompi.github.io/jeoquery/ui.html
+https://github.com/tompi/jeoquery
+
+Can I just get the entire earth json tree in one ajax request?
+http://tompi.github.io/jeoquery/ui.html
+
+
+Can I make a request for the entire Earth tree at once?
+http://tompi.github.io/jeoquery/earth.html
+
+6) Google search: "geonames autocomplete example"
